@@ -4,19 +4,17 @@
 
 package frc.robot;
 
-import org.littletonrobotics.junction.LoggedRobot;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.Chassis.ChassisIOPigeon2;
+import frc.robot.subsystems.Chassis.ChassisIOMXP;
 import frc.robot.subsystems.Chassis.ChassisSubsystem;
 import frc.robot.subsystems.Chassis.Modules.ModuleIOSparkMAX;
 import frc.robot.utilities.MotionHandler.MotionMode;
+import org.littletonrobotics.junction.LoggedRobot;
 
 public class Robot extends LoggedRobot {
-public static ChassisSubsystem swerveDrive;
-
+  public static ChassisSubsystem swerveDrive;
 
   public static MotionMode motionMode = MotionMode.LOCKDOWN;
 
@@ -27,7 +25,13 @@ public static ChassisSubsystem swerveDrive;
 
   @Override
   public void robotInit() {
-    swerveDrive = new ChassisSubsystem(new ChassisIOPigeon2(), new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_LEFT), new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_RIGHT), new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT), new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
+    swerveDrive =
+        new ChassisSubsystem(
+            new ChassisIOMXP(),
+            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_LEFT),
+            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_RIGHT),
+            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
+            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
   }
 
   @Override
@@ -46,6 +50,7 @@ public static ChassisSubsystem swerveDrive;
 
   @Override
   public void autonomousInit() {
+    motionMode = MotionMode.TRAJECTORY;
     m_autonomousCommand = null;
 
     if (m_autonomousCommand != null) {
@@ -64,6 +69,7 @@ public static ChassisSubsystem swerveDrive;
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    motionMode = MotionMode.FULL_DRIVE;
   }
 
   @Override

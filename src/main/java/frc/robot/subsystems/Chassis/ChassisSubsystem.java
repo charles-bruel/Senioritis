@@ -1,8 +1,5 @@
 package frc.robot.subsystems.Chassis;
 
-import edu.wpi.first.math.MatBuilder;
-import edu.wpi.first.math.Nat;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -11,17 +8,14 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.TimestampedDoubleArray;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Robot;
+import frc.robot.subsystems.Chassis.Modules.Module;
 import frc.robot.subsystems.Chassis.Modules.ModuleIO;
 import frc.robot.utilities.MotionHandler;
 import org.littletonrobotics.junction.Logger;
-import frc.robot.subsystems.Chassis.Modules.Module;;
 
 public class ChassisSubsystem extends SubsystemBase {
 
@@ -119,12 +113,11 @@ public class ChassisSubsystem extends SubsystemBase {
    *
    * @return The position of the robot on the field.
    */
-
   public Rotation2d getYaw() {
     return Rotation2d.fromDegrees(inputs.gyroYawPosition);
   }
 
-  private Pose2d getPose() {
+  public Pose2d getPose() {
     if (Robot.isReal()) {
       return odometry.getPoseMeters();
     } else {
@@ -263,9 +256,7 @@ public class ChassisSubsystem extends SubsystemBase {
         .recordOutput(
             "Swerve/Odometry Pose",
             new double[] {
-              getPose().getX(),
-              getPose().getY(),
-              getPose().getRotation().getDegrees()
+              getPose().getX(), getPose().getY(), getPose().getRotation().getDegrees()
             });
     Logger.getInstance().recordOutput("Swerve/MotionMode", Robot.motionMode.name());
 

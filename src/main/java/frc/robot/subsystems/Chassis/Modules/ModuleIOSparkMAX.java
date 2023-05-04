@@ -60,13 +60,12 @@ public class ModuleIOSparkMAX implements ModuleIO {
 
     getDriveEncoder().setPositionConversionFactor(Constants.DriveConstants.DIST_PER_PULSE);
 
-        getDriveEncoder()
-            .setVelocityConversionFactor((Constants.DriveConstants.DIST_PER_PULSE / 60));
+    getDriveEncoder().setVelocityConversionFactor((Constants.DriveConstants.DIST_PER_PULSE / 60));
 
     getAziEncoder().setPositionConversionFactor(7.0 / 150.0 * 360.0);
     getAziEncoder().setVelocityConversionFactor(7.0 / 150.0 * 360.0);
 
-      seed();
+    seed();
   }
 
   public void seed() {

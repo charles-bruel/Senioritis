@@ -11,13 +11,13 @@ public class ModuleInfo {
     FRONT_RIGHT("FrontRight"),
     BACK_LEFT("BackLeft"),
     BACK_RIGHT("BackRight");
-  
+
     private final String string;
-  
+
     SwerveModuleName(String name) {
       string = name;
     }
-  
+
     @Override
     public String toString() {
       return string;
