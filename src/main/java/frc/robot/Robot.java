@@ -6,12 +6,14 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Chassis.ChassisIOMXP;
 import frc.robot.subsystems.Chassis.ChassisSubsystem;
 import frc.robot.subsystems.Chassis.Modules.ModuleIOSparkMAX;
 import frc.robot.utilities.MotionHandler.MotionMode;
 import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class Robot extends LoggedRobot {
   public static ChassisSubsystem swerveDrive;
@@ -21,7 +23,9 @@ public class Robot extends LoggedRobot {
   public static final CommandXboxController driver = new CommandXboxController(0);
   public static final CommandXboxController operator = new CommandXboxController(1);
 
-  private Command m_autonomousCommand;
+  private final LoggedDashboardChooser<Command> autoChooser =
+      new LoggedDashboardChooser<>("Autonomous Routine");
+  private Command autoCommand;
 
   @Override
   public void robotInit() {
@@ -32,6 +36,8 @@ public class Robot extends LoggedRobot {
             new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_RIGHT),
             new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
             new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
+
+    autoChooser.addDefaultOption("Blank", new SequentialCommandGroup());
   }
 
   @Override
@@ -51,10 +57,10 @@ public class Robot extends LoggedRobot {
   @Override
   public void autonomousInit() {
     motionMode = MotionMode.TRAJECTORY;
-    m_autonomousCommand = null;
+    autoCommand = autoChooser.get();
 
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.schedule();
+    if (autoCommand != null) {
+      autoCommand.schedule();
     }
   }
 
@@ -66,8 +72,8 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void teleopInit() {
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (autoCommand != null) {
+      autoCommand.cancel();
     }
     motionMode = MotionMode.FULL_DRIVE;
   }
@@ -88,4 +94,8 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void testExit() {}
+
+  public String goFast() {
+    return "nyoooooooooom";
+  }
 }

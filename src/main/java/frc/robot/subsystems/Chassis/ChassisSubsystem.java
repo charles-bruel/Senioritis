@@ -223,6 +223,9 @@ public class ChassisSubsystem extends SubsystemBase {
       case FULL_DRIVE:
         setModuleStates(MotionHandler.driveFullControl());
         break;
+      case HEADING_CONTROLLER:
+        setModuleStates(MotionHandler.driveFullControl());
+        break;
       case LOCKDOWN:
         setModuleStates(MotionHandler.lockdown());
         break;
