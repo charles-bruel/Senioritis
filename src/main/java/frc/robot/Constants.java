@@ -40,7 +40,7 @@ public final class Constants {
     public static final int DRIVER_PORT = zero;
     public static final int OPERATOR_PORT = 1;
 
-    public static final int GYRO_PORT = INT_PLACEHOLDER;
+    public static final int GYRO_PORT = 0;
   }
 
   @UtilityClass
@@ -58,7 +58,7 @@ public final class Constants {
   @UtilityClass
   public static final class DriveConstants {
     public static final double K_JOYSTICK_TURN_DEADZONE = 0.04;
-    public static final double WHEEL_DIAMETER = DOUBLE_PLACEHOLDER;
+    public static final double WHEEL_DIAMETER = 4;
     public static final double GEAR_RATIO = DOUBLE_PLACEHOLDER;
     public static final double DIST_PER_PULSE =
         (1.0 / GEAR_RATIO) * Units.inchesToMeters(WHEEL_DIAMETER) * Math.PI;
@@ -71,7 +71,7 @@ public final class Constants {
     public static final int DRIVE_CURRENT_LIMIT = 50;
     public static final int AZI_CURRENT_LIMIT = 20;
 
-    public static final double K_MODULE_DISTANCE_FROM_CENTER = DOUBLE_PLACEHOLDER;
+    public static final double K_MODULE_DISTANCE_FROM_CENTER = 9.66;
 
     private static final Translation2d FRONT_LEFT_LOCATION =
         new Translation2d(
@@ -94,8 +94,8 @@ public final class Constants {
         new SwerveDriveKinematics(
             FRONT_LEFT_LOCATION, FRONT_RIGHT_LOCATION, BACK_LEFT_LOCATION, BACK_RIGHT_LOCATION);
 
-    private static final double BUMPERLESS_ROBOT_LENGTH = Units.inchesToMeters(26.5);
-    private static final double BUMPERLESS_ROBOT_WIDTH = Units.inchesToMeters(26.5);
+    private static final double BUMPERLESS_ROBOT_LENGTH = Units.inchesToMeters(24);
+    private static final double BUMPERLESS_ROBOT_WIDTH = Units.inchesToMeters(24);
     private static final double BUMPER_THICKNESS = Units.inchesToMeters(3);
 
     public static final double FULL_ROBOT_WIDTH = BUMPERLESS_ROBOT_WIDTH + BUMPER_THICKNESS * 2;
