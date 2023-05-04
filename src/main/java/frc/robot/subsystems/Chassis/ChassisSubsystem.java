@@ -18,22 +18,22 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Robot;
-import frc.robot.subsystems.swerveIO.module.SwerveModule;
-import frc.robot.util.MotionHandler;
+import frc.robot.subsystems.Chassis.Modules.ModuleIO;
+import frc.robot.utilities.MotionHandler;
 import org.littletonrobotics.junction.Logger;
+import frc.robot.subsystems.Chassis.Modules.Module;;
 
 public class ChassisSubsystem extends SubsystemBase {
 
   ChassisIO io;
   public final ChassisInputsAutoLogged inputs = new ChassisInputsAutoLogged();
 
-  private final SwerveModule frontLeft;
-  private final SwerveModule frontRight;
-  private final SwerveModule backLeft;
-  private final SwerveModule backRight;
+  private final Module frontLeft;
+  private final Module frontRight;
+  private final Module backLeft;
+  private final Module backRight;
 
   private final SwerveDriveOdometry odometry;
-  private final SwerveDrivePoseEstimator poseEstimator;
   private Pose2d simOdometryPose;
 
   private LinearFilter filteredRoll = LinearFilter.singlePoleIIR(0.08, 0.02);
@@ -78,24 +78,6 @@ public class ChassisSubsystem extends SubsystemBase {
             },
             new Pose2d());
 
-    poseEstimator =
-        new SwerveDrivePoseEstimator(
-            DriveConstants.KINEMATICS,
-            Rotation2d.fromDegrees(inputs.gyroYawPosition),
-            new SwerveModulePosition[] {
-              this.frontLeft.getPosition(),
-              this.frontRight.getPosition(),
-              this.backLeft.getPosition(),
-              this.backRight.getPosition()
-            },
-            new Pose2d(),
-            new MatBuilder<>(Nat.N3(), Nat.N1()).fill(0.1, 0.1, 0.1),
-            new MatBuilder<>(Nat.N3(), Nat.N1())
-                .fill(
-                    Constants.LimeLightConstants.VISION_STD_DEVI_POSITION_IN_METERS,
-                    Constants.LimeLightConstants.VISION_STD_DEVI_POSITION_IN_METERS,
-                    Constants.LimeLightConstants.VISION_STD_DEVI_ROTATION_IN_RADIANS));
-
     simOdometryPose = odometry.getPoseMeters();
   }
 
@@ -129,15 +111,6 @@ public class ChassisSubsystem extends SubsystemBase {
         },
         pose);
 
-    poseEstimator.resetPosition(
-        Rotation2d.fromDegrees(inputs.gyroYawPosition),
-        new SwerveModulePosition[] {
-          this.frontLeft.getPosition(),
-          this.frontRight.getPosition(),
-          this.backLeft.getPosition(),
-          this.backRight.getPosition()
-        },
-        pose);
     simOdometryPose = pose;
   }
 
@@ -146,27 +119,12 @@ public class ChassisSubsystem extends SubsystemBase {
    *
    * @return The position of the robot on the field.
    */
-  private Pose2d getEstimatedPose() {
-    if (Robot.isReal()) {
-      return poseEstimator.getEstimatedPosition();
-    } else {
-      return simOdometryPose;
-    }
-  }
-
-  public Pose2d getUsablePose() {
-    if (Constants.ENABLE_VISION_POSE_ESTIMATION) {
-      return getEstimatedPose();
-    } else {
-      return getRegularPose();
-    }
-  }
 
   public Rotation2d getYaw() {
     return Rotation2d.fromDegrees(inputs.gyroYawPosition);
   }
 
-  private Pose2d getRegularPose() {
+  private Pose2d getPose() {
     if (Robot.isReal()) {
       return odometry.getPoseMeters();
     } else {
@@ -179,34 +137,6 @@ public class ChassisSubsystem extends SubsystemBase {
         + frontRight.getTotalCurrentDraw()
         + backLeft.getTotalCurrentDraw()
         + backRight.getTotalCurrentDraw();
-  }
-
-  public void updateVisionPose(
-      TimestampedDoubleArray fieldPoseArray, TimestampedDoubleArray cameraPoseArray) {
-    double[] fVal = fieldPoseArray.value;
-    double[] cVal = cameraPoseArray.value;
-    double distCamToTag = Units.metersToInches(Math.abs(cVal[2]));
-
-    Logger.getInstance().recordOutput("Vision/distCamToTag", distCamToTag);
-    Pose2d fPose = new Pose2d(fVal[0], fVal[1], Rotation2d.fromDegrees(fVal[5]));
-
-    if (fPose.getX() == 0 && fPose.getY() == 0 && fPose.getRotation().getDegrees() == 0) {
-      Logger.getInstance().recordOutput("Vision/Got empty field pose", true);
-      return;
-    }
-    Logger.getInstance().recordOutput("Vision/Got empty field pose", false);
-
-    double jump_distance =
-        Units.metersToInches(
-            poseEstimator
-                .getEstimatedPosition()
-                .getTranslation()
-                .getDistance(fPose.getTranslation()));
-    Logger.getInstance().recordOutput("Vision/jump_distance", jump_distance);
-    if (distCamToTag < Constants.LimeLightConstants.CAMERA_TO_TAG_MAX_DIST_INCHES
-        && jump_distance < Constants.LimeLightConstants.MAX_POSE_JUMP_IN_INCHES) {
-      poseEstimator.addVisionMeasurement(fPose, Timer.getFPGATimestamp() - (fVal[6] / 1000.0));
-    }
   }
 
   /**
@@ -262,16 +192,6 @@ public class ChassisSubsystem extends SubsystemBase {
           backRight.getPosition()
         });
 
-    poseEstimator.updateWithTime(
-        Timer.getFPGATimestamp(),
-        Rotation2d.fromDegrees(inputs.gyroYawPosition),
-        new SwerveModulePosition[] {
-          frontLeft.getPosition(),
-          frontRight.getPosition(),
-          backLeft.getPosition(),
-          backRight.getPosition()
-        });
-
     if (Robot.isSimulation()) {
       SwerveModuleState[] measuredStates =
           new SwerveModuleState[] {
@@ -310,9 +230,6 @@ public class ChassisSubsystem extends SubsystemBase {
       case FULL_DRIVE:
         setModuleStates(MotionHandler.driveFullControl());
         break;
-      case HEADING_CONTROLLER:
-        setModuleStates(MotionHandler.driveHeadingController());
-        break;
       case LOCKDOWN:
         setModuleStates(MotionHandler.lockdown());
         break;
@@ -346,17 +263,9 @@ public class ChassisSubsystem extends SubsystemBase {
         .recordOutput(
             "Swerve/Odometry Pose",
             new double[] {
-              getRegularPose().getX(),
-              getRegularPose().getY(),
-              getRegularPose().getRotation().getDegrees()
-            });
-    Logger.getInstance()
-        .recordOutput(
-            "Swerve/PoseEstimator Pose",
-            new double[] {
-              getEstimatedPose().getX(),
-              getEstimatedPose().getY(),
-              getEstimatedPose().getRotation().getDegrees()
+              getPose().getX(),
+              getPose().getY(),
+              getPose().getRotation().getDegrees()
             });
     Logger.getInstance().recordOutput("Swerve/MotionMode", Robot.motionMode.name());
 

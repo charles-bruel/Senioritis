@@ -6,11 +6,10 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import frc.robot.utilities.ModuleInfo;
 import frc.robot.utilities.PIDFFGains;
-import frc.robot.utilities.SwerveModuleName;
+import frc.robot.utilities.ModuleInfo.SwerveModuleName;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -23,7 +22,6 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public final class Constants {
-
   public static final int zero = 0; // in case you need a zero :)
   public static final double π = Math.PI;
   public static final double DOUBLE_PLACEHOLDER = zero;
@@ -41,6 +39,8 @@ public final class Constants {
   public static final class RobotMap {
     public static final int DRIVER_PORT = zero;
     public static final int OPERATOR_PORT = 1;
+
+    public static final int GYRO_PORT = INT_PLACEHOLDER;
   }
 
   @UtilityClass
