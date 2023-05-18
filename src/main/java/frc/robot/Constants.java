@@ -41,19 +41,30 @@ public final class Constants {
     public static final int OPERATOR_PORT = 1;
 
     public static final int GYRO_PORT = 0;
+
+    public static final int ARM = INT_PLACEHOLDER;
   }
 
   @UtilityClass
-  public static class ElevatorConstants {}
+  public static class ArmConstants {
+    public static final double GEAR_RATIO = 17.1875;
+    public static final int CURRENT_LIMIT = 30;
+    public static final double MAX_HEIGHT = DOUBLE_PLACEHOLDER;
+    public static final double MIN_HEIGHT = 0;
+
+    public static final PIDFFGains GAINS =
+        PIDFFGains.builder("ArmController")
+            .kP(DOUBLE_PLACEHOLDER)
+            .kD(DOUBLE_PLACEHOLDER)
+            .kG(DOUBLE_PLACEHOLDER)
+            .build();
+  }
 
   @UtilityClass
   public static class FourBarConstants {}
 
   @UtilityClass
   public static class IntakeConstants {}
-
-  @UtilityClass
-  public static class SlapperConstants {}
 
   @UtilityClass
   public static final class DriveConstants {
@@ -103,20 +114,22 @@ public final class Constants {
 
     public static final double HEADING_CONTROLLER_DRIVER_CHANGE_RATE = 4;
     public static final PIDFFGains K_HEADING_CONTROLLER_GAINS =
-        PIDFFGains.builder("Heading Controller").kP(12).kS(3).kD(0.35).tolerance(1).build();
-
-    public static final PIDFFGains K_BRIDGE_CONTROLLER_GAINS =
-        PIDFFGains.builder("Bridge Controller").kP(0.01).kD(0).tolerance(zero).build();
-
+        // PIDFFGains.builder("Heading Controller").kP(12).kS(3).kD(0.35).tolerance(1).build();
+        PIDFFGains.builder("Heading Controller")
+            .kP(DOUBLE_PLACEHOLDER)
+            .kS(DOUBLE_PLACEHOLDER)
+            .kD(DOUBLE_PLACEHOLDER)
+            .tolerance(1)
+            .build();
     public static final ModuleInfo FRONT_LEFT =
         ModuleInfo.builder()
             .name(SwerveModuleName.FRONT_LEFT)
             .driveGains(Constants.DriveConstants.Gains.K_DEFAULT_DRIVING_GAINS)
-            .azimuthGains(Constants.DriveConstants.Gains.K_DEFAULT_AZIMUTH_GAINS)
-            .driveCANId(1)
-            .aziCANId(2)
+            .azimuthGains(Constants.DriveConstants.Gains.K_FRONT_LEFT_AZIMUTH_GAINS)
+            .driveCANId(INT_PLACEHOLDER)
+            .aziCANId(INT_PLACEHOLDER)
             .aziEncoderCANId(zero)
-            .offset(0)
+            .offset(DOUBLE_PLACEHOLDER)
             .location(FRONT_LEFT_LOCATION)
             .build();
 
@@ -124,11 +137,11 @@ public final class Constants {
         ModuleInfo.builder()
             .name(SwerveModuleName.FRONT_RIGHT)
             .driveGains(Constants.DriveConstants.Gains.K_DEFAULT_DRIVING_GAINS)
-            .azimuthGains(Constants.DriveConstants.Gains.K_DEFAULT_AZIMUTH_GAINS)
-            .driveCANId(3)
-            .aziCANId(4)
+            .azimuthGains(Constants.DriveConstants.Gains.K_FRONT_RIGHT_AZIMUTH_GAINS)
+            .driveCANId(INT_PLACEHOLDER)
+            .aziCANId(INT_PLACEHOLDER)
             .aziEncoderCANId(1)
-            .offset(0)
+            .offset(DOUBLE_PLACEHOLDER)
             .location(FRONT_RIGHT_LOCATION)
             .build();
 
@@ -136,11 +149,11 @@ public final class Constants {
         ModuleInfo.builder()
             .name(SwerveModuleName.BACK_LEFT)
             .driveGains(Constants.DriveConstants.Gains.K_DEFAULT_DRIVING_GAINS)
-            .azimuthGains(Constants.DriveConstants.Gains.K_DEFAULT_AZIMUTH_GAINS)
-            .driveCANId(10)
-            .aziCANId(9)
+            .azimuthGains(Constants.DriveConstants.Gains.K_BACK_LEFT_AZIMUTH_GAINS)
+            .driveCANId(INT_PLACEHOLDER)
+            .aziCANId(INT_PLACEHOLDER)
             .aziEncoderCANId(2)
-            .offset(0)
+            .offset(DOUBLE_PLACEHOLDER)
             .location(BACK_LEFT_LOCATION)
             .build();
 
@@ -148,20 +161,29 @@ public final class Constants {
         ModuleInfo.builder()
             .name(SwerveModuleName.BACK_RIGHT)
             .driveGains(Constants.DriveConstants.Gains.K_DEFAULT_DRIVING_GAINS)
-            .azimuthGains(Constants.DriveConstants.Gains.K_DEFAULT_AZIMUTH_GAINS)
-            .driveCANId(5)
-            .aziCANId(6)
+            .azimuthGains(Constants.DriveConstants.Gains.K_BACK_RIGHT_AZIMUTH_GAINS)
+            .driveCANId(INT_PLACEHOLDER)
+            .aziCANId(INT_PLACEHOLDER)
             .aziEncoderCANId(3)
-            .offset(0)
+            .offset(DOUBLE_PLACEHOLDER)
             .location(BACK_RIGHT_LOCATION)
             .build();
 
     @UtilityClass
     public static final class Gains {
       public static final PIDFFGains K_DEFAULT_AZIMUTH_GAINS =
-          PIDFFGains.builder("BackRight/Default Azimuth").kP(0.06).tolerance(0.75).build();
+          //   PIDFFGains.builder("BackRight/Default Azimuth").kP(0.06).tolerance(0.75).build();
+          PIDFFGains.builder("BackRight/Default Azimuth")
+              .kP(DOUBLE_PLACEHOLDER)
+              .tolerance(0.75)
+              .build();
       public static final PIDFFGains K_DEFAULT_DRIVING_GAINS =
-          PIDFFGains.builder("BackRight/Default Driving").kP(1.0).kS(0.15).kV(2).build();
+          //   PIDFFGains.builder("BackRight/Default Driving").kP(1.0).kS(0.15).kV(2).build();
+          PIDFFGains.builder("BackRight/Default Driving")
+              .kP(DOUBLE_PLACEHOLDER)
+              .kS(DOUBLE_PLACEHOLDER)
+              .kV(DOUBLE_PLACEHOLDER)
+              .build();
 
       public static final PIDFFGains K_TRAJECTORY_CONTROLLER_GAINS_X =
           PIDFFGains.builder("Trajectory Controller X-Axis").kP(7).kD(0.0).build();
@@ -171,15 +193,11 @@ public final class Constants {
 
       public static final PIDFFGains K_TRAJECTORY_CONTROLLER_GAINS_ROTATION =
           PIDFFGains.builder("Trajectory Controller Rotation").kP(2.5).kD(0.0).build();
-    }
 
-    public static final PIDFFGains K_FRONT_LEFT_AZIMUTH_GAINS =
-        PIDFFGains.builder("Front Left").kP(0.1).kS(0.12).tolerance(1.0).build();
-    public static final PIDFFGains K_FRONT_RIGHT_AZIMUTH_GAINS =
-        PIDFFGains.builder("Front Right").kP(0.1).kS(.12).tolerance(1.0).build();
-    public static final PIDFFGains K_BACK_LEFT_AZIMUTH_GAINS =
-        PIDFFGains.builder("Back Left").kP(0.1).kS(.15).tolerance(1.0).build();
-    public static final PIDFFGains K_BACK_RIGHT_AZIMUTH_GAINS =
-        PIDFFGains.builder("Back Right").kP(0.1).kS(.13).tolerance(1.0).build();
+      public static final PIDFFGains K_FRONT_LEFT_AZIMUTH_GAINS = K_DEFAULT_AZIMUTH_GAINS;
+      public static final PIDFFGains K_FRONT_RIGHT_AZIMUTH_GAINS = K_DEFAULT_AZIMUTH_GAINS;
+      public static final PIDFFGains K_BACK_LEFT_AZIMUTH_GAINS = K_DEFAULT_AZIMUTH_GAINS;
+      public static final PIDFFGains K_BACK_RIGHT_AZIMUTH_GAINS = K_DEFAULT_AZIMUTH_GAINS;
+    }
   }
 }

@@ -63,8 +63,7 @@ public class HeadingController {
    * @return The speed, in degrees per second, of rotation.
    */
   public double update() {
-      Logger.getInstance()
-          .recordOutput("Heading Controller/setpoint degrees", setpoint.getDegrees());
+    Logger.getInstance().recordOutput("Heading Controller/setpoint degrees", setpoint.getDegrees());
 
     SmartDashboard.putBoolean("Heading Controller/at setpoint", controller.atSetpoint());
 

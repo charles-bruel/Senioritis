@@ -4,19 +4,25 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.Arm.ArmIOSparkMAX;
+import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Chassis.ChassisIOMXP;
 import frc.robot.subsystems.Chassis.ChassisSubsystem;
 import frc.robot.subsystems.Chassis.Modules.ModuleIOSparkMAX;
+import frc.robot.utilities.HeadingController;
 import frc.robot.utilities.MotionHandler.MotionMode;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
 
 public class Robot extends LoggedRobot {
   public static ChassisSubsystem swerveDrive;
+  public static ArmSubsystem arm;
 
   public static MotionMode motionMode = MotionMode.LOCKDOWN;
 
@@ -37,12 +43,56 @@ public class Robot extends LoggedRobot {
             new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
             new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
 
+    arm = new ArmSubsystem(new ArmIOSparkMAX());
+
     autoChooser.addDefaultOption("Blank", new SequentialCommandGroup());
+
+    driver.x().onTrue(new InstantCommand(() -> motionMode = MotionMode.LOCKDOWN));
+
+    driver
+        .povUp()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  motionMode = MotionMode.HEADING_CONTROLLER;
+                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(0));
+                }));
+
+    driver
+        .povLeft()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  motionMode = MotionMode.HEADING_CONTROLLER;
+                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(90));
+                }));
+
+    driver
+        .povDown()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  motionMode = MotionMode.HEADING_CONTROLLER;
+                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(180));
+                }));
+
+    driver
+        .povRight()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  motionMode = MotionMode.HEADING_CONTROLLER;
+                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
+                }));
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+
+    if (driver.getRightX() > 0.5) {
+      motionMode = MotionMode.FULL_DRIVE;
+    }
   }
 
   @Override

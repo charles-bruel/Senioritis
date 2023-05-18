@@ -41,12 +41,10 @@ public class MotionHandler {
             ChassisSpeeds.fromFieldRelativeSpeeds(
                 xSpeed * DriveConstants.MAX_SWERVE_VEL * ChassisSubsystem.allianceFlipper,
                 ySpeed * DriveConstants.MAX_SWERVE_VEL * ChassisSubsystem.allianceFlipper,
-                Units.degreesToRadians(HeadingController.getInstance().update())
-                    * speedFactor,
+                Units.degreesToRadians(HeadingController.getInstance().update()) * speedFactor,
                 Robot.swerveDrive.getYaw()));
 
-    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates,
-  DriveConstants.MAX_SWERVE_VEL);
+    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.MAX_SWERVE_VEL);
 
     return swerveModuleStates;
   }
