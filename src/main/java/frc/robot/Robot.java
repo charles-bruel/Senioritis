@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.Arm.ArmIOSparkMAX;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Chassis.ChassisIOMXP;
 import frc.robot.subsystems.Chassis.ChassisSubsystem;
@@ -43,7 +42,7 @@ public class Robot extends LoggedRobot {
             new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
             new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
 
-    arm = new ArmSubsystem(new ArmIOSparkMAX());
+    // arm = new ArmSubsystem(new ArmIOSparkMAX());
 
     autoChooser.addDefaultOption("Blank", new SequentialCommandGroup());
 
