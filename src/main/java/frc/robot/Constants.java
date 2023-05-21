@@ -22,6 +22,7 @@ import lombok.experimental.UtilityClass;
  */
 @UtilityClass
 public final class Constants {
+  public static final boolean TUNING_MODE = true;
   public static final int zero = 0; // in case you need a zero :)
   public static final double π = Math.PI;
   public static final double DOUBLE_PLACEHOLDER = zero;

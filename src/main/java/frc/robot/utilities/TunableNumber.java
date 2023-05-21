@@ -1,5 +1,8 @@
 package frc.robot.utilities;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
+
 // Credit to FRC 6328
 // https://github.com/Mechanical-Advantage/RobotCode2022/blob/6444c14056f0dc636a02fefa10ca4e5098e59470/src/main/java/frc/robot/util/TunableNumber.java
 
@@ -50,6 +53,10 @@ public class TunableNumber {
    */
   public void setDefault(double defaultValue) {
     this.defaultValue = defaultValue;
+    if (Constants.TUNING_MODE) {
+      // This makes sure the data is on NetworkTables but will not change it
+      SmartDashboard.putNumber(key, SmartDashboard.getNumber(key, defaultValue));
+    }
   }
 
   /**
@@ -58,7 +65,7 @@ public class TunableNumber {
    * @return The current value
    */
   public double get() {
-    return defaultValue;
+    return Constants.TUNING_MODE ? SmartDashboard.getNumber(key, defaultValue) : defaultValue;
   }
 
   /**
