@@ -16,8 +16,12 @@ import frc.robot.subsystems.Chassis.ChassisSubsystem;
 import frc.robot.subsystems.Chassis.Modules.ModuleIOSparkMAX;
 import frc.robot.utilities.HeadingController;
 import frc.robot.utilities.MotionHandler.MotionMode;
+import java.io.File;
 import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 public class Robot extends LoggedRobot {
   public static ChassisSubsystem swerveDrive;
@@ -34,6 +38,13 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotInit() {
+    Logger.getInstance().addDataReceiver(new NT4Publisher());
+    File sda1 = new File(Constants.Logging.sda1Dir);
+    if (sda1.exists()) {
+      Logger.getInstance().addDataReceiver(new WPILOGWriter(Constants.Logging.sda1Dir));
+    }
+    Logger.getInstance().start();
+
     swerveDrive =
         new ChassisSubsystem(
             new ChassisIOMXP(),
