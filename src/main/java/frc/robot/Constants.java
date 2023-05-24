@@ -129,8 +129,8 @@ public final class Constants {
             .azimuthGains(Constants.DriveConstants.Gains.K_FRONT_LEFT_AZIMUTH_GAINS)
             .driveCANId(7)
             .aziCANId(8)
-            .CANCoder(zero)
-            .offset(DOUBLE_PLACEHOLDER)
+            .CANCoder(30)
+            .offset(-261.56)
             .location(FRONT_LEFT_LOCATION)
             .build();
 
@@ -141,8 +141,8 @@ public final class Constants {
             .azimuthGains(Constants.DriveConstants.Gains.K_FRONT_RIGHT_AZIMUTH_GAINS)
             .driveCANId(1)
             .aziCANId(2)
-            .CANCoder(1)
-            .offset(DOUBLE_PLACEHOLDER)
+            .CANCoder(31)
+            .offset(-273.51)
             .location(FRONT_RIGHT_LOCATION)
             .build();
 
@@ -153,8 +153,8 @@ public final class Constants {
             .azimuthGains(Constants.DriveConstants.Gains.K_BACK_LEFT_AZIMUTH_GAINS)
             .driveCANId(5)
             .aziCANId(6)
-            .CANCoder(2)
-            .offset(DOUBLE_PLACEHOLDER)
+            .CANCoder(28)
+            .offset(-218.23)
             .location(BACK_LEFT_LOCATION)
             .build();
 
@@ -165,8 +165,8 @@ public final class Constants {
             .azimuthGains(Constants.DriveConstants.Gains.K_BACK_RIGHT_AZIMUTH_GAINS)
             .driveCANId(3)
             .aziCANId(4)
-            .CANCoder(3)
-            .offset(DOUBLE_PLACEHOLDER)
+            .CANCoder(29)
+            .offset(-320.00)
             .location(BACK_RIGHT_LOCATION)
             .build();
 

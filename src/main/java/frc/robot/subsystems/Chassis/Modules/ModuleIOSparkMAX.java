@@ -79,8 +79,7 @@ public class ModuleIOSparkMAX implements ModuleIO {
   @Override
   public void updateInputs(ModuleInputs inputs) {
 
-    inputs.aziAbsoluteEncoderRawDegrees = CANCoder.getAbsolutePosition();
-    inputs.aziAbsoluteEncoderAdjDegrees = CANCoder.getPosition();
+    inputs.aziAbsoluteEncoderDegrees = CANCoder.getAbsolutePosition();
 
     inputs.aziOutputVolts = azimuth.getAppliedOutput() * RobotController.getBatteryVoltage();
     inputs.aziTempCelcius = azimuth.getMotorTemperature();

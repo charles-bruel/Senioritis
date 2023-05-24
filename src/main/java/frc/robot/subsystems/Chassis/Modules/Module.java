@@ -110,13 +110,13 @@ public class Module extends SubsystemBase {
             inputs.driveEncoderVelocityMetresPerSecond, state.speedMetersPerSecond);
 
     boolean useMotorEncoder = Math.abs(inputs.aziEncoderPositionDeg) > 0.1 || Robot.isSimulation();
-    boolean useAbsoluteEncoder = Math.abs(inputs.aziAbsoluteEncoderRawDegrees) > 0.1;
+    boolean useAbsoluteEncoder = Math.abs(inputs.aziAbsoluteEncoderDegrees) > 0.1;
     double feedbackVal;
     if (useMotorEncoder) {
       feedbackVal = inputs.aziEncoderPositionDeg;
       Logger.getInstance().recordOutput("Azimuth feedback source", "motor");
     } else if (useAbsoluteEncoder) {
-      feedbackVal = inputs.aziAbsoluteEncoderAdjDegrees;
+      feedbackVal = inputs.aziAbsoluteEncoderDegrees;
       Logger.getInstance().recordOutput("Azimuth feedback source", "absolute encoder");
     } else {
       feedbackVal = inputs.aziEncoderPositionDeg;
@@ -144,7 +144,6 @@ public class Module extends SubsystemBase {
     recordOutput("Target Speed", state.speedMetersPerSecond);
     recordOutput("Angle Speed", state.angle.getDegrees());
     recordOutput(
-        "Azimuth Encoder Delta",
-        inputs.aziEncoderPositionDeg - inputs.aziAbsoluteEncoderAdjDegrees);
+        "Azimuth Encoder Delta", inputs.aziEncoderPositionDeg - inputs.aziAbsoluteEncoderDegrees);
   }
 }
