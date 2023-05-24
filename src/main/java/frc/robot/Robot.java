@@ -39,11 +39,12 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotInit() {
     Logger.getInstance().addDataReceiver(new NT4Publisher());
-    if(isReal()) {
-    File sda1 = new File(Constants.Logging.sda1Dir);
-    if (sda1.exists() && sda1.isDirectory()) {
-      Logger.getInstance().addDataReceiver(new WPILOGWriter(Constants.Logging.sda1Dir));
-    }}
+    if (isReal()) {
+      File sda1 = new File(Constants.Logging.sda1Dir);
+      if (sda1.exists() && sda1.isDirectory()) {
+        Logger.getInstance().addDataReceiver(new WPILOGWriter(Constants.Logging.sda1Dir));
+      }
+    }
     Logger.getInstance().start();
 
     swerveDrive =

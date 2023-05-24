@@ -6,9 +6,8 @@ public interface ModuleIO {
 
   @AutoLog
   public class ModuleInputs {
-    public double aziAbsoluteEncoderRawVolts = 0.0;
-    public double aziAbsoluteEncoderAdjVolts = 0.0;
-    public double aziAbsoluteEncoderAdjAngleDeg = 0.0;
+    public double aziAbsoluteEncoderRawDegrees = 0.0;
+    public double aziAbsoluteEncoderAdjDegrees = 0.0;
 
     public double aziOutputVolts = 0.0;
     public double aziCurrentDrawAmps = 0.0;

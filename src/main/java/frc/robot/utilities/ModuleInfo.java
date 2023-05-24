@@ -29,7 +29,7 @@ public class ModuleInfo {
   @Getter private PIDFFGains azimuthGains;
   @Getter private int driveCANId;
   @Getter private int aziCANId;
-  @Getter private int aziEncoderCANId;
+  @Getter private int CANCoder;
   @Getter private double offset;
   @Getter private Translation2d location;
 }

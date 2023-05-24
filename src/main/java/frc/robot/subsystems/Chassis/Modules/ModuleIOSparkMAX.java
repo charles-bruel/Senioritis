@@ -1,20 +1,22 @@
 package frc.robot.subsystems.Chassis.Modules;
 
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+import com.ctre.phoenix.sensors.WPI_CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotController;
 import frc.robot.Constants;
 import frc.robot.utilities.ModuleInfo;
-import frc.robot.utilities.OffsetAbsoluteAnalogEncoder;
 
 public class ModuleIOSparkMAX implements ModuleIO {
 
-  OffsetAbsoluteAnalogEncoder azimuthEncoder;
   CANSparkMax driver;
   CANSparkMax azimuth;
+  WPI_CANCoder CANCoder;
+  CANCoderConfiguration CANCoderConfig = new CANCoderConfiguration();
   private final ModuleInfo information;
 
   private RelativeEncoder getDriveEncoder() {
@@ -25,19 +27,21 @@ public class ModuleIOSparkMAX implements ModuleIO {
     return azimuth.getEncoder();
   }
 
-  private OffsetAbsoluteAnalogEncoder getAziAbsoluteEncoder() {
-    return azimuthEncoder;
-  }
-
   public void applyVoltageForCharacterization(double voltage) {
     driver.setVoltage(voltage);
   }
 
+  public WPI_CANCoder getCANCoder() {
+    return CANCoder;
+  }
+
   public ModuleIOSparkMAX(ModuleInfo information) {
     this.information = information;
-    azimuthEncoder =
-        new OffsetAbsoluteAnalogEncoder(
-            this.information.getAziEncoderCANId(), this.information.getOffset());
+    CANCoder = new WPI_CANCoder(information.getCANCoder());
+    CANCoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
+    CANCoderConfig.magnetOffsetDegrees = information.getOffset();
+    CANCoder.configAllSettings(CANCoderConfig);
+    CANCoder.configMagnetOffset(information.getOffset());
     driver = new CANSparkMax(this.information.getDriveCANId(), MotorType.kBrushless);
     azimuth = new CANSparkMax(this.information.getAziCANId(), MotorType.kBrushless);
 
@@ -69,26 +73,20 @@ public class ModuleIOSparkMAX implements ModuleIO {
   }
 
   public void seed() {
-    getAziEncoder().setPosition(getAziAbsoluteEncoder().getAdjustedRotation2d().getDegrees());
+    getAziEncoder().setPosition(getCANCoder().getAbsolutePosition());
   }
 
   @Override
   public void updateInputs(ModuleInputs inputs) {
 
-    inputs.aziAbsoluteEncoderRawVolts = azimuthEncoder.getUnadjustedVoltage();
-    inputs.aziAbsoluteEncoderAdjVolts = azimuthEncoder.getAdjustedVoltage();
-    inputs.aziAbsoluteEncoderAdjAngleDeg =
-        azimuthEncoder.getAdjustedRotation2d().getDegrees() - 180;
+    inputs.aziAbsoluteEncoderRawDegrees = CANCoder.getAbsolutePosition();
+    inputs.aziAbsoluteEncoderAdjDegrees = CANCoder.getPosition();
 
     inputs.aziOutputVolts = azimuth.getAppliedOutput() * RobotController.getBatteryVoltage();
     inputs.aziTempCelcius = azimuth.getMotorTemperature();
     inputs.aziCurrentDrawAmps = azimuth.getOutputCurrent();
     inputs.aziEncoderPositionDeg = getAziEncoder().getPosition() - 180;
     inputs.aziEncoderVelocityDegPerSecond = getAziEncoder().getVelocity();
-    inputs.aziEncoderSimplifiedPositionDeg =
-        OffsetAbsoluteAnalogEncoder.simplifyRotation2d(
-                Rotation2d.fromDegrees(getAziEncoder().getPosition() - 180))
-            .getDegrees();
 
     inputs.driveEncoderPositionMetres = getDriveEncoder().getPosition();
     inputs.driveEncoderVelocityMetresPerSecond = getDriveEncoder().getVelocity();

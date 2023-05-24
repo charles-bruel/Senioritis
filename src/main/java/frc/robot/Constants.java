@@ -129,7 +129,7 @@ public final class Constants {
             .azimuthGains(Constants.DriveConstants.Gains.K_FRONT_LEFT_AZIMUTH_GAINS)
             .driveCANId(7)
             .aziCANId(8)
-            .aziEncoderCANId(zero)
+            .CANCoder(zero)
             .offset(DOUBLE_PLACEHOLDER)
             .location(FRONT_LEFT_LOCATION)
             .build();
@@ -141,7 +141,7 @@ public final class Constants {
             .azimuthGains(Constants.DriveConstants.Gains.K_FRONT_RIGHT_AZIMUTH_GAINS)
             .driveCANId(1)
             .aziCANId(2)
-            .aziEncoderCANId(1)
+            .CANCoder(1)
             .offset(DOUBLE_PLACEHOLDER)
             .location(FRONT_RIGHT_LOCATION)
             .build();
@@ -153,7 +153,7 @@ public final class Constants {
             .azimuthGains(Constants.DriveConstants.Gains.K_BACK_LEFT_AZIMUTH_GAINS)
             .driveCANId(5)
             .aziCANId(6)
-            .aziEncoderCANId(2)
+            .CANCoder(2)
             .offset(DOUBLE_PLACEHOLDER)
             .location(BACK_LEFT_LOCATION)
             .build();
@@ -165,7 +165,7 @@ public final class Constants {
             .azimuthGains(Constants.DriveConstants.Gains.K_BACK_RIGHT_AZIMUTH_GAINS)
             .driveCANId(3)
             .aziCANId(4)
-            .aziEncoderCANId(3)
+            .CANCoder(3)
             .offset(DOUBLE_PLACEHOLDER)
             .location(BACK_RIGHT_LOCATION)
             .build();
@@ -173,18 +173,10 @@ public final class Constants {
     @UtilityClass
     public static final class Gains {
       public static final PIDFFGains K_DEFAULT_AZIMUTH_GAINS =
-          //   PIDFFGains.builder("BackRight/Default Azimuth").kP(0.06).tolerance(0.75).build();
-          PIDFFGains.builder("BackRight/Default Azimuth")
-              .kP(DOUBLE_PLACEHOLDER)
-              .tolerance(0.75)
-              .build();
+          PIDFFGains.builder("BackRight/Default Azimuth").kP(0.06).tolerance(0.75).build();
+
       public static final PIDFFGains K_DEFAULT_DRIVING_GAINS =
-          //   PIDFFGains.builder("BackRight/Default Driving").kP(1.0).kS(0.15).kV(2).build();
-          PIDFFGains.builder("BackRight/Default Driving")
-              .kP(DOUBLE_PLACEHOLDER)
-              .kS(DOUBLE_PLACEHOLDER)
-              .kV(DOUBLE_PLACEHOLDER)
-              .build();
+          PIDFFGains.builder("BackRight/Default Driving").kP(1.0).kS(0.15).kV(2).build();
 
       public static final PIDFFGains K_TRAJECTORY_CONTROLLER_GAINS_X =
           PIDFFGains.builder("Trajectory Controller X-Axis").kP(7).kD(0.0).build();
