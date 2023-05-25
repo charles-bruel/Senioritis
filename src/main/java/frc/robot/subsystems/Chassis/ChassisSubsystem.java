@@ -73,6 +73,7 @@ public class ChassisSubsystem extends SubsystemBase {
             new Pose2d());
 
     simOdometryPose = odometry.getPoseMeters();
+    seed();
   }
 
   public void zeroGyro() {
