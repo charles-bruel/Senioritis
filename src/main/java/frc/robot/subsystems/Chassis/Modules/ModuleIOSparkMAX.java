@@ -62,12 +62,13 @@ public class ModuleIOSparkMAX implements ModuleIO {
     driver.setIdleMode(IdleMode.kBrake);
     azimuth.setIdleMode(IdleMode.kBrake);
 
-    getDriveEncoder().setPositionConversionFactor(Constants.DriveConstants.DIST_PER_PULSE);
+    getDriveEncoder().setPositionConversionFactor(Constants.DriveConstants.DRIVE_DIST_PER_PULSE);
 
-    getDriveEncoder().setVelocityConversionFactor((Constants.DriveConstants.DIST_PER_PULSE / 60));
+    getDriveEncoder()
+        .setVelocityConversionFactor((Constants.DriveConstants.DRIVE_DIST_PER_PULSE / 60));
 
-    getAziEncoder().setPositionConversionFactor(7.0 / 150.0 * 360.0);
-    getAziEncoder().setVelocityConversionFactor(7.0 / 150.0 * 360.0);
+    getAziEncoder().setPositionConversionFactor(Constants.DriveConstants.AZI_DIST_PER_PULSE);
+    getAziEncoder().setVelocityConversionFactor(Constants.DriveConstants.AZI_DIST_PER_PULSE / 60);
 
     seed();
   }
@@ -76,15 +77,30 @@ public class ModuleIOSparkMAX implements ModuleIO {
     getAziEncoder().setPosition(getCANCoder().getAbsolutePosition());
   }
 
+  public double simplifyDegrees(double degrees) {
+    double result = degrees;
+
+    while (result > 360) {
+      result -= 360;
+    }
+    while (result <= 0) {
+      result += 360;
+    }
+    return result;
+  }
+
   @Override
   public void updateInputs(ModuleInputs inputs) {
 
     inputs.aziAbsoluteEncoderDegrees = CANCoder.getAbsolutePosition();
+    inputs.aziAbsoluteEncoderRawDegrees =
+        CANCoder.getAbsolutePosition() - CANCoder.configGetMagnetOffset();
 
     inputs.aziOutputVolts = azimuth.getAppliedOutput() * RobotController.getBatteryVoltage();
     inputs.aziTempCelcius = azimuth.getMotorTemperature();
     inputs.aziCurrentDrawAmps = azimuth.getOutputCurrent();
-    inputs.aziEncoderPositionDeg = getAziEncoder().getPosition() - 180;
+    inputs.aziEncoderPositionDeg = getAziEncoder().getPosition();
+    inputs.aziEncoderSimplifiedPositionDeg = simplifyDegrees(getAziEncoder().getPosition());
     inputs.aziEncoderVelocityDegPerSecond = getAziEncoder().getVelocity();
 
     inputs.driveEncoderPositionMetres = getDriveEncoder().getPosition();
