@@ -71,10 +71,11 @@ public final class Constants {
   public static final class DriveConstants {
     public static final double K_JOYSTICK_TURN_DEADZONE = 0.04;
     public static final double WHEEL_DIAMETER = 4;
-    public static final double GEAR_RATIO = 7.13;
-    public static final double DIST_PER_PULSE =
-        (1.0 / GEAR_RATIO) * Units.inchesToMeters(WHEEL_DIAMETER) * Math.PI;
-    // 1;
+    public static final double DRIVE_GEAR_RATIO = 7.36;
+    public static final double AZI_GEAR_RATIO = 13.71;
+    public static final double DRIVE_DIST_PER_PULSE =
+        (1.0 / DRIVE_GEAR_RATIO) * Units.inchesToMeters(WHEEL_DIAMETER) * Math.PI;
+    public static final double AZI_DIST_PER_PULSE = (1.0 / AZI_GEAR_RATIO) * 360;
     public static final double MAX_SWERVE_VEL = Units.feetToMeters(16.0);
     public static final double MAX_SWERVE_AZI = Math.PI;
     public static final double MAX_SWERVE_ACCEL = Units.feetToMeters(5);
@@ -130,7 +131,7 @@ public final class Constants {
             .driveCANId(7)
             .aziCANId(8)
             .CANCoder(30)
-            .offset(-261.56)
+            .offset(-259.18)
             .location(FRONT_LEFT_LOCATION)
             .build();
 
@@ -142,7 +143,7 @@ public final class Constants {
             .driveCANId(1)
             .aziCANId(2)
             .CANCoder(31)
-            .offset(-273.51)
+            .offset(-278.26)
             .location(FRONT_RIGHT_LOCATION)
             .build();
 
@@ -151,10 +152,10 @@ public final class Constants {
             .name(SwerveModuleName.BACK_LEFT)
             .driveGains(Constants.DriveConstants.Gains.K_DEFAULT_DRIVING_GAINS)
             .azimuthGains(Constants.DriveConstants.Gains.K_BACK_LEFT_AZIMUTH_GAINS)
-            .driveCANId(5)
-            .aziCANId(6)
+            .driveCANId(6)
+            .aziCANId(5)
             .CANCoder(28)
-            .offset(-218.23)
+            .offset(-213.39)
             .location(BACK_LEFT_LOCATION)
             .build();
 
@@ -166,7 +167,7 @@ public final class Constants {
             .driveCANId(3)
             .aziCANId(4)
             .CANCoder(29)
-            .offset(-320.00)
+            .offset(-323.17)
             .location(BACK_RIGHT_LOCATION)
             .build();
 
