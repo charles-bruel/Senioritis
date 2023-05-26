@@ -46,6 +46,8 @@ public final class Constants {
     public static final int ARM = INT_PLACEHOLDER;
     public static final int PIVOT_1 = INT_PLACEHOLDER;
     public static final int PIVOT_2 = INT_PLACEHOLDER;
+    
+    public static final int PIVOT_ENCODER = INT_PLACEHOLDER;
   }
 
   @UtilityClass
@@ -69,6 +71,7 @@ public final class Constants {
     public static final int CURRENT_LIMIT = 30;
     public static final double MAX_ANGLE = DOUBLE_PLACEHOLDER;
     public static final double MIN_ANGLE = DOUBLE_PLACEHOLDER;
+    public static final double ENCODER_OFFSET = DOUBLE_PLACEHOLDER;
 
     public static final PIDFFGains GAINS =
         PIDFFGains.builder("PivotControlller")
