@@ -10,10 +10,14 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.Arm.ArmIOSparkMAX;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Chassis.ChassisIOMXP;
 import frc.robot.subsystems.Chassis.ChassisSubsystem;
 import frc.robot.subsystems.Chassis.Modules.ModuleIOSparkMAX;
+import frc.robot.subsystems.Intake.IntakeIOSparkMAXPWN;
+import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.subsystems.Pivot.PivotIOFalcon;
 import frc.robot.subsystems.Pivot.PivotSubsystem;
 import frc.robot.utilities.HeadingController;
 import frc.robot.utilities.MotionHandler.MotionMode;
@@ -28,6 +32,7 @@ public class Robot extends LoggedRobot {
   public static ChassisSubsystem swerveDrive;
   public static ArmSubsystem arm;
   public static PivotSubsystem pivot;
+  public static IntakeSubsystem intake;
 
   public static MotionMode motionMode = MotionMode.LOCKDOWN;
 
@@ -57,9 +62,9 @@ public class Robot extends LoggedRobot {
             new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
             new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
 
-    // arm = new ArmSubsystem(new ArmIOSparkMAX());
-
-    // pivot = new PivotSubsystem(new PivotIOFalcon());
+    arm = new ArmSubsystem(new ArmIOSparkMAX());
+    pivot = new PivotSubsystem(new PivotIOFalcon());
+    intake = new IntakeSubsystem(new IntakeIOSparkMAXPWN());
 
     autoChooser.addDefaultOption("Blank", new SequentialCommandGroup());
 
