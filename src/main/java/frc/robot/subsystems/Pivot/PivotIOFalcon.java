@@ -22,7 +22,8 @@ public class PivotIOFalcon implements PivotIO {
         pivotMotor1.setNeutralMode(NeutralMode.Brake);
         pivotMotor2.setNeutralMode(NeutralMode.Brake);
 
-        //TODO: Current limit the falcons
+        pivotMotor1.configSupplyCurrentLimit(Constants.PivotConstants.CURRENT_LIMIT);
+        pivotMotor2.configSupplyCurrentLimit(Constants.PivotConstants.CURRENT_LIMIT);
 
         absoluteEncoder = new DutyCycleEncoder(Constants.RobotMap.PIVOT_ENCODER);
         absoluteEncoder.setPositionOffset(Constants.PivotConstants.ENCODER_OFFSET);

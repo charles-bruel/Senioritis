@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -69,7 +71,13 @@ public final class Constants {
   @UtilityClass
   public static class PivotConstants {
     public static final double GEAR_RATIO = 22400.0/171.0;
-    public static final int CURRENT_LIMIT = 30;
+    public static final SupplyCurrentLimitConfiguration CURRENT_LIMIT = new SupplyCurrentLimitConfiguration(
+        true, 
+        20, 
+        50, 
+        .25
+    );
+;
     public static final double MAX_ANGLE = DOUBLE_PLACEHOLDER;
     public static final double MIN_ANGLE = DOUBLE_PLACEHOLDER;
     public static final double ENCODER_OFFSET = DOUBLE_PLACEHOLDER;
