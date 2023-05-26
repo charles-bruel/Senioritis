@@ -14,6 +14,7 @@ import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Chassis.ChassisIOMXP;
 import frc.robot.subsystems.Chassis.ChassisSubsystem;
 import frc.robot.subsystems.Chassis.Modules.ModuleIOSparkMAX;
+import frc.robot.subsystems.Pivot.PivotSubsystem;
 import frc.robot.utilities.HeadingController;
 import frc.robot.utilities.MotionHandler.MotionMode;
 import java.io.File;
@@ -26,6 +27,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 public class Robot extends LoggedRobot {
   public static ChassisSubsystem swerveDrive;
   public static ArmSubsystem arm;
+  public static PivotSubsystem pivot;
 
   public static MotionMode motionMode = MotionMode.LOCKDOWN;
 
@@ -56,6 +58,8 @@ public class Robot extends LoggedRobot {
             new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
 
     // arm = new ArmSubsystem(new ArmIOSparkMAX());
+
+    // pivot = new PivotSubsystem(new PivotIOFalcon());
 
     autoChooser.addDefaultOption("Blank", new SequentialCommandGroup());
 

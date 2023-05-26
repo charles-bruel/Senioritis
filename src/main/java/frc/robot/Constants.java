@@ -44,6 +44,8 @@ public final class Constants {
     public static final int GYRO_PORT = 0;
 
     public static final int ARM = INT_PLACEHOLDER;
+    public static final int PIVOT_1 = INT_PLACEHOLDER;
+    public static final int PIVOT_2 = INT_PLACEHOLDER;
   }
 
   @UtilityClass
@@ -55,6 +57,21 @@ public final class Constants {
 
     public static final PIDFFGains GAINS =
         PIDFFGains.builder("ArmController")
+            .kP(DOUBLE_PLACEHOLDER)
+            .kD(DOUBLE_PLACEHOLDER)
+            .kG(DOUBLE_PLACEHOLDER)
+            .build();
+  }
+
+  @UtilityClass
+  public static class PivotConstants {
+    public static final double GEAR_RATIO = 22400.0/171.0;
+    public static final int CURRENT_LIMIT = 30;
+    public static final double MAX_ANGLE = DOUBLE_PLACEHOLDER;
+    public static final double MIN_ANGLE = DOUBLE_PLACEHOLDER;
+
+    public static final PIDFFGains GAINS =
+        PIDFFGains.builder("PivotControlller")
             .kP(DOUBLE_PLACEHOLDER)
             .kD(DOUBLE_PLACEHOLDER)
             .kG(DOUBLE_PLACEHOLDER)
