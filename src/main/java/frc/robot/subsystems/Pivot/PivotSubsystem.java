@@ -1,11 +1,10 @@
 package frc.robot.subsystems.Pivot;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.utilities.PIDFFController;
+import org.littletonrobotics.junction.Logger;
 
 public class PivotSubsystem extends SubsystemBase {
 
