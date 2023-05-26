@@ -9,9 +9,11 @@ public interface PivotIO {
         public double absoluteEncoderAngle;
 
         public double motor1OutputVolts;
-        public double motor1OutputAmps;
+        public double motor1OutputAmpsSupply;
+        public double motor1OutputAmpsStator;
         public double motor2OutputVolts;
-        public double motor2OutputAmps;
+        public double motor2OutputAmpsSupply;
+        public double motor2OutputAmpsStator;
 
     }
 
