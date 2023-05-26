@@ -46,7 +46,8 @@ public final class Constants {
     public static final int ARM = INT_PLACEHOLDER;
     public static final int PIVOT_1 = INT_PLACEHOLDER;
     public static final int PIVOT_2 = INT_PLACEHOLDER;
-    
+    public static final int INTAKE = INT_PLACEHOLDER;
+
     public static final int PIVOT_ENCODER = INT_PLACEHOLDER;
   }
 
