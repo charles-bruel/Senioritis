@@ -49,7 +49,9 @@ public final class Constants {
     public static final int PIVOT_2 = INT_PLACEHOLDER;
     public static final int INTAKE = INT_PLACEHOLDER;
 
+    // Absolute Encoders
     public static final int PIVOT_ENCODER = INT_PLACEHOLDER;
+    public static final int ARM_ENCODER = INT_PLACEHOLDER;
   }
 
   @UtilityClass
@@ -58,6 +60,8 @@ public final class Constants {
     public static final int CURRENT_LIMIT = 30;
     public static final double MAX_HEIGHT = DOUBLE_PLACEHOLDER;
     public static final double MIN_HEIGHT = 0;
+    public static final double ENCODER_OFFSET = DOUBLE_PLACEHOLDER;
+    public static final double DIST_PER_ROTATION = DOUBLE_PLACEHOLDER;
 
     public static final PIDFFGains GAINS =
         PIDFFGains.builder("ArmController")
@@ -84,9 +88,6 @@ public final class Constants {
             .kG(DOUBLE_PLACEHOLDER)
             .build();
   }
-
-  @UtilityClass
-  public static class FourBarConstants {}
 
   @UtilityClass
   public static class IntakeConstants {}
