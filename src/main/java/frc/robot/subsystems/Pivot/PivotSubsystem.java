@@ -1,9 +1,13 @@
 package frc.robot.subsystems.Pivot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PivotConstants;
+import frc.robot.Robot;
 import frc.robot.utilities.PIDFFController;
+import frc.robot.utilities.SuperstructureConfig;
 import org.littletonrobotics.junction.Logger;
 
 public class PivotSubsystem extends SubsystemBase {
@@ -18,6 +22,10 @@ public class PivotSubsystem extends SubsystemBase {
     controller = new PIDFFController(PivotConstants.GAINS);
     inputs = new PivotInputsAutoLogged();
     io.updateInputs(inputs);
+  }
+
+  public boolean isAtTarget() {
+    return Math.abs(targetAngle - inputs.absoluteEncoderAngle) < 1;
   }
 
   public void setTargetAngle(double newAngle) {
@@ -38,5 +46,15 @@ public class PivotSubsystem extends SubsystemBase {
     Logger.getInstance().recordOutput("Pivot/Output", output);
 
     Logger.getInstance().processInputs("Pivot", inputs);
+  }
+
+  public static class Commands {
+    public static Command setPosition(double angle) {
+      return new InstantCommand(() -> Robot.pivot.setTargetAngle(angle));
+    }
+
+    public static Command setPosition(SuperstructureConfig config) {
+      return setPosition(config.getPivotPosition());
+    }
   }
 }

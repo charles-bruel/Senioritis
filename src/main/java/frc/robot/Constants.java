@@ -11,6 +11,7 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.utilities.ModuleInfo;
 import frc.robot.utilities.ModuleInfo.SwerveModuleName;
 import frc.robot.utilities.PIDFFGains;
+import frc.robot.utilities.SuperstructureConfig;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -218,5 +219,15 @@ public final class Constants {
       public static final PIDFFGains K_BACK_LEFT_AZIMUTH_GAINS = K_DEFAULT_AZIMUTH_GAINS;
       public static final PIDFFGains K_BACK_RIGHT_AZIMUTH_GAINS = K_DEFAULT_AZIMUTH_GAINS;
     }
+  }
+
+  @UtilityClass
+  public static class Superstructures {
+    public static final SuperstructureConfig TEST_INTAKE =
+        SuperstructureConfig.builder().intakeVoltage(5).build();
+    public static final SuperstructureConfig TEST_ARM =
+        SuperstructureConfig.builder().armHeight(10).build();
+    public static final SuperstructureConfig TEST_PIVOT =
+        SuperstructureConfig.builder().pivotPosition(30).build();
   }
 }

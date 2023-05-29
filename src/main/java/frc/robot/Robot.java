@@ -102,6 +102,10 @@ public class Robot extends LoggedRobot {
                   motionMode = MotionMode.HEADING_CONTROLLER;
                   HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
                 }));
+
+    operator.a().onTrue(PivotSubsystem.Commands.setPosition(Constants.Superstructures.TEST_PIVOT));
+    operator.b().onTrue(PivotSubsystem.Commands.setPosition(Constants.Superstructures.TEST_ARM));
+    operator.x().onTrue(PivotSubsystem.Commands.setPosition(Constants.Superstructures.TEST_INTAKE));
   }
 
   @Override

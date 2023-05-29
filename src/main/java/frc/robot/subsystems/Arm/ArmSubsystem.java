@@ -1,10 +1,14 @@
 package frc.robot.subsystems.Arm;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Robot;
 import frc.robot.utilities.PIDFFController;
+import frc.robot.utilities.SuperstructureConfig;
 import org.littletonrobotics.junction.Logger;
 
 public class ArmSubsystem extends SubsystemBase {
@@ -27,6 +31,10 @@ public class ArmSubsystem extends SubsystemBase {
     } else targetHeight = newHeight;
   }
 
+  public boolean isAtTarget() {
+    return Math.abs(targetHeight - inputs.motorEncoderHeight) < 1;
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
@@ -38,5 +46,23 @@ public class ArmSubsystem extends SubsystemBase {
     Logger.getInstance().recordOutput("Arm/Output", output);
 
     Logger.getInstance().processInputs("Arm", inputs);
+  }
+
+  public static class Commands {
+    public static Command setHeight(double targetHeight) {
+      return new InstantCommand(() -> Robot.arm.setTargetHeight(targetHeight), Robot.arm);
+    }
+
+    public static Command setHeight(SuperstructureConfig config) {
+      return setHeight(config.getArmHeight());
+    }
+
+    public static Command setHeightAndWait(double targetHeight) {
+      return setHeight(targetHeight).repeatedly().until(() -> Robot.arm.isAtTarget());
+    }
+
+    public static Command setHeightAndWait(SuperstructureConfig config) {
+      return setHeightAndWait(config.getArmHeight());
+    }
   }
 }
