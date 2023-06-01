@@ -18,8 +18,8 @@ public class PivotIOFalcon implements PivotIO {
     pivotMotor2.follow(pivotMotor1);
     pivotMotor2.setInverted(true);
 
-    pivotMotor1.setNeutralMode(NeutralMode.Brake);
-    pivotMotor2.setNeutralMode(NeutralMode.Brake);
+    pivotMotor1.setNeutralMode(NeutralMode.Coast);
+    pivotMotor2.setNeutralMode(NeutralMode.Coast);
 
     pivotMotor1.configSupplyCurrentLimit(Constants.PivotConstants.CURRENT_LIMIT);
     pivotMotor2.configSupplyCurrentLimit(Constants.PivotConstants.CURRENT_LIMIT);
