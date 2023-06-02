@@ -39,6 +39,7 @@ public class PivotSubsystem extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     double output = controller.calculate(inputs.absoluteEncoderAngle, targetAngle);
+    output = Robot.operator.getLeftY() * 3;
     io.setVoltage(output);
 
     output = MathUtil.clamp(output, -12, 12);

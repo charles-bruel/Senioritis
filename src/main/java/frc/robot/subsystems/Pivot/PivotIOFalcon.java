@@ -48,7 +48,7 @@ public class PivotIOFalcon implements PivotIO {
 
   @Override
   public void setVoltage(double volts) {
-    volts = 0;
+    // volts = 0;
     pivotMotorRight.setVoltage(volts);
   }
 }
