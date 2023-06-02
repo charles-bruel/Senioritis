@@ -15,8 +15,10 @@ public class PivotIOFalcon implements PivotIO {
     pivotMotorRight = new WPI_TalonFX(Constants.RobotMap.PIVOT_RIGHT);
     pivotMotorLeft = new WPI_TalonFX(Constants.RobotMap.PIVOT_LEFT);
 
+    pivotMotorRight.setInverted(true);
+
     pivotMotorLeft.follow(pivotMotorRight);
-    pivotMotorLeft.setInverted(true);
+    pivotMotorLeft.setInverted(false);
 
     pivotMotorRight.setNeutralMode(NeutralMode.Coast);
     pivotMotorLeft.setNeutralMode(NeutralMode.Coast);
@@ -48,7 +50,6 @@ public class PivotIOFalcon implements PivotIO {
 
   @Override
   public void setVoltage(double volts) {
-    // volts = 0;
     pivotMotorRight.setVoltage(volts);
   }
 }

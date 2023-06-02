@@ -81,12 +81,10 @@ public final class Constants {
     public static final double MIN_ANGLE = DOUBLE_PLACEHOLDER;
     public static final double ENCODER_OFFSET = 109;
 
+    public static final double MAX_OUTPUT_VOLTS = 4;
+
     public static final PIDFFGains GAINS =
-        PIDFFGains.builder("PivotController")
-            .kP(DOUBLE_PLACEHOLDER)
-            .kD(DOUBLE_PLACEHOLDER)
-            .kG(DOUBLE_PLACEHOLDER)
-            .build();
+        PIDFFGains.builder("PivotController").kP(0.25).kD(0).kG(0).build();
   }
 
   @UtilityClass

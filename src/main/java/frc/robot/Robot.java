@@ -104,11 +104,29 @@ public class Robot extends LoggedRobot {
                   HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
                 }));*/
 
-    operator.a().onTrue(PivotSubsystem.Commands.setPosition(Constants.Superstructures.TEST_PIVOT));
-    operator.b().onTrue(PivotSubsystem.Commands.setPosition(Constants.Superstructures.TEST_ARM));
-    // operator.x().onTrue(PivotSubsystem.Commands.setPosition(Constants.Superstructures.TEST_INTAKE));
-
     operator
+        .a()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  Robot.pivot.setTargetAngle(30);
+                }));
+    operator
+        .b()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  Robot.pivot.setTargetAngle(60);
+                }));
+    operator
+        .x()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  Robot.pivot.setTargetAngle(90);
+                }));
+
+    /*operator
         .y()
         .onTrue(
             new InstantCommand(
@@ -136,7 +154,7 @@ public class Robot extends LoggedRobot {
             new InstantCommand(
                 () -> {
                   intake.setVoltage(0);
-                }));
+                }));*/
   }
 
   @Override
