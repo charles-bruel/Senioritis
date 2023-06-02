@@ -4,6 +4,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Robot;
 import frc.robot.utilities.PIDFFController;
@@ -15,7 +16,7 @@ public class PivotSubsystem extends SubsystemBase {
   private PivotIO io;
   private PivotInputsAutoLogged inputs;
   private final PIDFFController controller;
-  private double targetAngle = 0;
+  private double targetAngle = 90;
 
   public PivotSubsystem(PivotIO pivotIO) {
     io = pivotIO;
@@ -29,9 +30,9 @@ public class PivotSubsystem extends SubsystemBase {
   }
 
   public void setTargetAngle(double newAngle) {
-    if (newAngle < PivotConstants.MIN_ANGLE || newAngle > PivotConstants.MAX_ANGLE) {
-      return;
-    }
+    // if (newAngle < PivotConstants.MIN_ANGLE || newAngle > PivotConstants.MAX_ANGLE) {
+    //   return;
+    // }
     targetAngle = newAngle;
   }
 
@@ -39,9 +40,13 @@ public class PivotSubsystem extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     double output = controller.calculate(inputs.absoluteEncoderAngle, targetAngle);
+    output =
+        MathUtil.clamp(
+            output,
+            -Constants.PivotConstants.MAX_OUTPUT_VOLTS,
+            Constants.PivotConstants.MAX_OUTPUT_VOLTS);
     io.setVoltage(output);
 
-    output = MathUtil.clamp(output, -12, 12);
     Logger.getInstance().recordOutput("Pivot/Target Angle", targetAngle);
     Logger.getInstance().recordOutput("Pivot/Output", output);
 

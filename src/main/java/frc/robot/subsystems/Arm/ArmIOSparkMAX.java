@@ -20,12 +20,14 @@ public class ArmIOSparkMAX implements ArmIO {
     armMotor.setInverted(false);
     armMotor.setIdleMode(IdleMode.kBrake);
     armMotor.getEncoder().setPositionConversionFactor(1 / Constants.ArmConstants.GEAR_RATIO);
+
     absoluteEncoder.setPositionOffset(Constants.ArmConstants.ENCODER_OFFSET);
     absoluteEncoder.setDistancePerRotation(Constants.ArmConstants.DIST_PER_ROTATION);
   }
 
   @Override
   public void updateInputs(ArmInputs inputs) {
+    inputs.absoluteEncoderAngle = absoluteEncoder.getAbsolutePosition() * 360;
     inputs.absoluteEncoderHeight = absoluteEncoder.getDistance();
     inputs.motorEncoderHeight = armMotor.getEncoder().getPosition();
     inputs.motorOutputAmps = armMotor.getOutputCurrent();
@@ -34,6 +36,7 @@ public class ArmIOSparkMAX implements ArmIO {
 
   @Override
   public void setVoltage(double volts) {
+    volts = 0;
     armMotor.setVoltage(volts);
   }
 }

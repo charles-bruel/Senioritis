@@ -45,14 +45,14 @@ public final class Constants {
 
     public static final int GYRO_PORT = 0;
 
-    public static final int ARM = INT_PLACEHOLDER;
-    public static final int PIVOT_1 = INT_PLACEHOLDER;
-    public static final int PIVOT_2 = INT_PLACEHOLDER;
-    public static final int INTAKE = INT_PLACEHOLDER;
+    public static final int ARM = 14;
+    public static final int PIVOT_RIGHT = 15;
+    public static final int PIVOT_LEFT = 16;
+    public static final int INTAKE = 0;
 
     // Absolute Encoders
-    public static final int PIVOT_ENCODER = INT_PLACEHOLDER;
-    public static final int ARM_ENCODER = INT_PLACEHOLDER;
+    public static final int PIVOT_ENCODER = 1;
+    public static final int ARM_ENCODER = 0;
   }
 
   @UtilityClass
@@ -77,17 +77,14 @@ public final class Constants {
     public static final double GEAR_RATIO = 22400.0 / 171.0;
     public static final SupplyCurrentLimitConfiguration CURRENT_LIMIT =
         new SupplyCurrentLimitConfiguration(true, 20, 50, .25);
-    ;
     public static final double MAX_ANGLE = DOUBLE_PLACEHOLDER;
     public static final double MIN_ANGLE = DOUBLE_PLACEHOLDER;
-    public static final double ENCODER_OFFSET = DOUBLE_PLACEHOLDER;
+    public static final double ENCODER_OFFSET = 109;
+
+    public static final double MAX_OUTPUT_VOLTS = 4;
 
     public static final PIDFFGains GAINS =
-        PIDFFGains.builder("PivotControlller")
-            .kP(DOUBLE_PLACEHOLDER)
-            .kD(DOUBLE_PLACEHOLDER)
-            .kG(DOUBLE_PLACEHOLDER)
-            .build();
+        PIDFFGains.builder("PivotController").kP(0.25).kD(0).kG(0).build();
   }
 
   @UtilityClass

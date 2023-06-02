@@ -4,19 +4,20 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.Arm.ArmIOSparkMAX;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Chassis.ChassisIOMXP;
 import frc.robot.subsystems.Chassis.ChassisSubsystem;
 import frc.robot.subsystems.Chassis.Modules.ModuleIOSparkMAX;
+import frc.robot.subsystems.Intake.IntakeIOSparkMAXPWM;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
+import frc.robot.subsystems.Pivot.PivotIOFalcon;
 import frc.robot.subsystems.Pivot.PivotSubsystem;
-import frc.robot.utilities.HeadingController;
 import frc.robot.utilities.MotionHandler.MotionMode;
 import java.io.File;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -59,15 +60,15 @@ public class Robot extends LoggedRobot {
             new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
             new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
 
-    // arm = new ArmSubsystem(new ArmIOSparkMAX());
-    // pivot = new PivotSubsystem(new PivotIOFalcon());
-    // intake = new IntakeSubsystem(new IntakeIOSparkMAXPWM());
+    arm = new ArmSubsystem(new ArmIOSparkMAX());
+    pivot = new PivotSubsystem(new PivotIOFalcon());
+    intake = new IntakeSubsystem(new IntakeIOSparkMAXPWM());
 
     autoChooser.addDefaultOption("Blank", new SequentialCommandGroup());
 
     driver.x().onTrue(new InstantCommand(() -> motionMode = MotionMode.LOCKDOWN));
 
-    driver
+    /*driver
         .povUp()
         .onTrue(
             new InstantCommand(
@@ -101,11 +102,59 @@ public class Robot extends LoggedRobot {
                 () -> {
                   motionMode = MotionMode.HEADING_CONTROLLER;
                   HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
+                }));*/
+
+    operator
+        .a()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  Robot.pivot.setTargetAngle(30);
+                }));
+    operator
+        .b()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  Robot.pivot.setTargetAngle(60);
+                }));
+    operator
+        .x()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  Robot.pivot.setTargetAngle(90);
                 }));
 
-    operator.a().onTrue(PivotSubsystem.Commands.setPosition(Constants.Superstructures.TEST_PIVOT));
-    operator.b().onTrue(PivotSubsystem.Commands.setPosition(Constants.Superstructures.TEST_ARM));
-    operator.x().onTrue(PivotSubsystem.Commands.setPosition(Constants.Superstructures.TEST_INTAKE));
+    /*operator
+        .y()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  intake.setVoltage(12);
+                }));
+    operator
+        .y()
+        .onFalse(
+            new InstantCommand(
+                () -> {
+                  intake.setVoltage(0);
+                }));
+
+    operator
+        .x()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  intake.setVoltage(-12);
+                }));
+    operator
+        .x()
+        .onFalse(
+            new InstantCommand(
+                () -> {
+                  intake.setVoltage(0);
+                }));*/
   }
 
   @Override
@@ -113,7 +162,7 @@ public class Robot extends LoggedRobot {
     CommandScheduler.getInstance().run();
 
     if (driver.getRightX() > 0.5) {
-      motionMode = MotionMode.FULL_DRIVE;
+      // motionMode = MotionMode.FULL_DRIVE;
     }
   }
 
@@ -147,7 +196,7 @@ public class Robot extends LoggedRobot {
     if (autoCommand != null) {
       autoCommand.cancel();
     }
-    motionMode = MotionMode.FULL_DRIVE;
+    // motionMode = MotionMode.FULL_DRIVE;
   }
 
   @Override
