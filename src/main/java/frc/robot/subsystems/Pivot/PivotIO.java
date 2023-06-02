@@ -8,12 +8,12 @@ public interface PivotIO {
     public double motorEncoderAngle;
     public double absoluteEncoderAngle;
 
-    public double motor1OutputVolts;
-    public double motor1OutputAmpsSupply;
-    public double motor1OutputAmpsStator;
-    public double motor2OutputVolts;
-    public double motor2OutputAmpsSupply;
-    public double motor2OutputAmpsStator;
+    public double motorRightOutputVolts;
+    public double motorRightOutputAmpsSupply;
+    public double motorRightOutputAmpsStator;
+    public double motorLeftOutputVolts;
+    public double motorLeftOutputAmpsSupply;
+    public double motorLeftOutputAmpsStator;
   }
 
   public void updateInputs(PivotInputs inputs);
