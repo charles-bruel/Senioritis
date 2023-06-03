@@ -39,6 +39,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     double output = controller.calculate(inputs.absoluteEncoderHeight, targetHeight);
+    output = Robot.operator.getLeftY() * 12;
     io.setVoltage(output);
 
     output = MathUtil.clamp(output, -12, 12);

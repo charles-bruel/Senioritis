@@ -36,6 +36,10 @@ public class PivotSubsystem extends SubsystemBase {
     targetAngle = newAngle;
   }
 
+  public double getTargetAngle() {
+    return targetAngle;
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);

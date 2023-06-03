@@ -109,14 +109,14 @@ public class Robot extends LoggedRobot {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  Robot.pivot.setTargetAngle(30);
+                  Robot.pivot.setTargetAngle(8);
                 }));
     operator
         .b()
         .onTrue(
             new InstantCommand(
                 () -> {
-                  Robot.pivot.setTargetAngle(60);
+                  Robot.pivot.setTargetAngle(Robot.pivot.getTargetAngle() - 1);
                 }));
     operator
         .x()
@@ -126,7 +126,7 @@ public class Robot extends LoggedRobot {
                   Robot.pivot.setTargetAngle(90);
                 }));
 
-    /*operator
+    operator
         .y()
         .onTrue(
             new InstantCommand(
@@ -141,7 +141,7 @@ public class Robot extends LoggedRobot {
                   intake.setVoltage(0);
                 }));
 
-    operator
+    /*operator
         .x()
         .onTrue(
             new InstantCommand(
