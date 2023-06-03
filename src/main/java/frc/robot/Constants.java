@@ -61,7 +61,7 @@ public final class Constants {
     public static final int CURRENT_LIMIT = 30;
     public static final double MAX_HEIGHT = DOUBLE_PLACEHOLDER;
     public static final double MIN_HEIGHT = 0;
-    public static final double ENCODER_OFFSET = DOUBLE_PLACEHOLDER;
+    public static final double ENCODER_OFFSET = 283;
     public static final double DIST_PER_ROTATION = 10.5;
 
     public static final PIDFFGains GAINS =
