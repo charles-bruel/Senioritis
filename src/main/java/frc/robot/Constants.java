@@ -62,7 +62,7 @@ public final class Constants {
     public static final double MAX_HEIGHT = DOUBLE_PLACEHOLDER;
     public static final double MIN_HEIGHT = 0;
     public static final double ENCODER_OFFSET = DOUBLE_PLACEHOLDER;
-    public static final double DIST_PER_ROTATION = DOUBLE_PLACEHOLDER;
+    public static final double DIST_PER_ROTATION = 10.5;
 
     public static final PIDFFGains GAINS =
         PIDFFGains.builder("ArmController")
@@ -81,10 +81,10 @@ public final class Constants {
     public static final double MIN_ANGLE = DOUBLE_PLACEHOLDER;
     public static final double ENCODER_OFFSET = 109;
 
-    public static final double MAX_OUTPUT_VOLTS = 4;
+    public static final double MAX_OUTPUT_VOLTS = 6;
 
     public static final PIDFFGains GAINS =
-        PIDFFGains.builder("PivotController").kP(0.25).kD(0).kG(0).build();
+        PIDFFGains.builder("PivotController").kP(0.25).kD(0).kI(0.01).build();
   }
 
   @UtilityClass
