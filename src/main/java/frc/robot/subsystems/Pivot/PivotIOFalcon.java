@@ -6,23 +6,25 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Constants;
 
 public class PivotIOFalcon implements PivotIO {
-  private final WPI_TalonFX pivotMotor1;
-  private final WPI_TalonFX pivotMotor2;
+  private final WPI_TalonFX pivotMotorRight;
+  private final WPI_TalonFX pivotMotorLeft;
 
   private final DutyCycleEncoder absoluteEncoder;
 
   public PivotIOFalcon() {
-    pivotMotor1 = new WPI_TalonFX(Constants.RobotMap.PIVOT_1);
-    pivotMotor2 = new WPI_TalonFX(Constants.RobotMap.PIVOT_2);
+    pivotMotorRight = new WPI_TalonFX(Constants.RobotMap.PIVOT_RIGHT);
+    pivotMotorLeft = new WPI_TalonFX(Constants.RobotMap.PIVOT_LEFT);
 
-    pivotMotor2.follow(pivotMotor1);
-    pivotMotor2.setInverted(true);
+    pivotMotorRight.setInverted(true);
 
-    pivotMotor1.setNeutralMode(NeutralMode.Brake);
-    pivotMotor2.setNeutralMode(NeutralMode.Brake);
+    pivotMotorLeft.follow(pivotMotorRight);
+    pivotMotorLeft.setInverted(false);
 
-    pivotMotor1.configSupplyCurrentLimit(Constants.PivotConstants.CURRENT_LIMIT);
-    pivotMotor2.configSupplyCurrentLimit(Constants.PivotConstants.CURRENT_LIMIT);
+    pivotMotorRight.setNeutralMode(NeutralMode.Coast);
+    pivotMotorLeft.setNeutralMode(NeutralMode.Coast);
+
+    pivotMotorRight.configSupplyCurrentLimit(Constants.PivotConstants.CURRENT_LIMIT);
+    pivotMotorLeft.configSupplyCurrentLimit(Constants.PivotConstants.CURRENT_LIMIT);
 
     absoluteEncoder = new DutyCycleEncoder(Constants.RobotMap.PIVOT_ENCODER);
     absoluteEncoder.setPositionOffset(Constants.PivotConstants.ENCODER_OFFSET);
@@ -30,24 +32,24 @@ public class PivotIOFalcon implements PivotIO {
 
   @Override
   public void updateInputs(PivotInputs inputs) {
-    inputs.absoluteEncoderAngle = absoluteEncoder.getAbsolutePosition();
+    inputs.absoluteEncoderAngle = absoluteEncoder.getAbsolutePosition() * -360 + 109;
     inputs.motorEncoderAngle =
-        pivotMotor1.getSelectedSensorPosition(0)
+        pivotMotorRight.getSelectedSensorPosition(0)
             * (360.0 / 2048.0)
             * (1 / Constants.PivotConstants.GEAR_RATIO);
 
-    inputs.motor1OutputAmpsSupply = pivotMotor1.getSupplyCurrent();
-    inputs.motor2OutputAmpsSupply = pivotMotor2.getSupplyCurrent();
+    inputs.motorRightOutputAmpsSupply = pivotMotorRight.getSupplyCurrent();
+    inputs.motorLeftOutputAmpsSupply = pivotMotorLeft.getSupplyCurrent();
 
-    inputs.motor1OutputAmpsStator = pivotMotor1.getStatorCurrent();
-    inputs.motor2OutputAmpsStator = pivotMotor2.getStatorCurrent();
+    inputs.motorRightOutputAmpsStator = pivotMotorRight.getStatorCurrent();
+    inputs.motorLeftOutputAmpsStator = pivotMotorLeft.getStatorCurrent();
 
-    inputs.motor1OutputVolts = pivotMotor1.getMotorOutputVoltage();
-    inputs.motor2OutputVolts = pivotMotor2.getMotorOutputVoltage();
+    inputs.motorRightOutputVolts = pivotMotorRight.getMotorOutputVoltage();
+    inputs.motorLeftOutputVolts = pivotMotorLeft.getMotorOutputVoltage();
   }
 
   @Override
   public void setVoltage(double volts) {
-    pivotMotor1.setVoltage(volts);
+    pivotMotorRight.setVoltage(volts);
   }
 }

@@ -11,6 +11,7 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.utilities.ModuleInfo;
 import frc.robot.utilities.ModuleInfo.SwerveModuleName;
 import frc.robot.utilities.PIDFFGains;
+import frc.robot.utilities.SuperstructureConfig;
 import lombok.experimental.UtilityClass;
 
 /**
@@ -44,12 +45,14 @@ public final class Constants {
 
     public static final int GYRO_PORT = 0;
 
-    public static final int ARM = INT_PLACEHOLDER;
-    public static final int PIVOT_1 = INT_PLACEHOLDER;
-    public static final int PIVOT_2 = INT_PLACEHOLDER;
-    public static final int INTAKE = INT_PLACEHOLDER;
+    public static final int ARM = 14;
+    public static final int PIVOT_RIGHT = 15;
+    public static final int PIVOT_LEFT = 16;
+    public static final int INTAKE = 0;
 
-    public static final int PIVOT_ENCODER = INT_PLACEHOLDER;
+    // Absolute Encoders
+    public static final int PIVOT_ENCODER = 1;
+    public static final int ARM_ENCODER = 0;
   }
 
   @UtilityClass
@@ -58,6 +61,8 @@ public final class Constants {
     public static final int CURRENT_LIMIT = 30;
     public static final double MAX_HEIGHT = DOUBLE_PLACEHOLDER;
     public static final double MIN_HEIGHT = 0;
+    public static final double ENCODER_OFFSET = DOUBLE_PLACEHOLDER;
+    public static final double DIST_PER_ROTATION = 10.5;
 
     public static final PIDFFGains GAINS =
         PIDFFGains.builder("ArmController")
@@ -72,21 +77,15 @@ public final class Constants {
     public static final double GEAR_RATIO = 22400.0 / 171.0;
     public static final SupplyCurrentLimitConfiguration CURRENT_LIMIT =
         new SupplyCurrentLimitConfiguration(true, 20, 50, .25);
-    ;
     public static final double MAX_ANGLE = DOUBLE_PLACEHOLDER;
     public static final double MIN_ANGLE = DOUBLE_PLACEHOLDER;
-    public static final double ENCODER_OFFSET = DOUBLE_PLACEHOLDER;
+    public static final double ENCODER_OFFSET = 109;
+
+    public static final double MAX_OUTPUT_VOLTS = 6;
 
     public static final PIDFFGains GAINS =
-        PIDFFGains.builder("PivotControlller")
-            .kP(DOUBLE_PLACEHOLDER)
-            .kD(DOUBLE_PLACEHOLDER)
-            .kG(DOUBLE_PLACEHOLDER)
-            .build();
+        PIDFFGains.builder("PivotController").kP(0.25).kD(0).kI(0.01).build();
   }
-
-  @UtilityClass
-  public static class FourBarConstants {}
 
   @UtilityClass
   public static class IntakeConstants {}
@@ -217,5 +216,15 @@ public final class Constants {
       public static final PIDFFGains K_BACK_LEFT_AZIMUTH_GAINS = K_DEFAULT_AZIMUTH_GAINS;
       public static final PIDFFGains K_BACK_RIGHT_AZIMUTH_GAINS = K_DEFAULT_AZIMUTH_GAINS;
     }
+  }
+
+  @UtilityClass
+  public static class Superstructures {
+    public static final SuperstructureConfig TEST_INTAKE =
+        SuperstructureConfig.builder().intakeVoltage(5).build();
+    public static final SuperstructureConfig TEST_ARM =
+        SuperstructureConfig.builder().armHeight(10).build();
+    public static final SuperstructureConfig TEST_PIVOT =
+        SuperstructureConfig.builder().pivotPosition(30).build();
   }
 }

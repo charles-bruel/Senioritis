@@ -6,6 +6,8 @@ public interface ArmIO {
   @AutoLog
   public class ArmInputs {
     public double motorEncoderHeight = 0;
+    public double motorEncoderAngle = 0;
+    public double absoluteEncoderAngle = 0;
     public double absoluteEncoderHeight = 0;
 
     public double motorOutputVolts = 0;
