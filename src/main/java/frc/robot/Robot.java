@@ -125,7 +125,7 @@ public class Robot extends LoggedRobot {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  Robot.pivot.setTargetAngle(8);
+                  Robot.pivot.setTargetAngle(16);
                 }));
     operator
         .b()
