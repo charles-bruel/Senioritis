@@ -43,6 +43,18 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotInit() {
+    initializeLogging();
+
+    initializeSubsystems();
+
+    autoChooser.addDefaultOption("Blank", new SequentialCommandGroup());
+
+    createSwerveCommands();
+
+    createOperatorCommands();
+  }
+
+  private void initializeLogging() {
     Logger.getInstance().addDataReceiver(new NT4Publisher());
     if (isReal()) {
       File sda1 = new File(Constants.Logging.sda1Dir);
@@ -51,21 +63,23 @@ public class Robot extends LoggedRobot {
       }
     }
     Logger.getInstance().start();
+  }
 
+  private void initializeSubsystems() {
     swerveDrive =
-        new ChassisSubsystem(
-            new ChassisIOMXP(),
-            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_LEFT),
-            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_RIGHT),
-            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
-            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
+    new ChassisSubsystem(
+        new ChassisIOMXP(),
+        new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_LEFT),
+        new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_RIGHT),
+        new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
+        new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
 
     arm = new ArmSubsystem(new ArmIOSparkMAX());
     pivot = new PivotSubsystem(new PivotIOFalcon());
     intake = new IntakeSubsystem(new IntakeIOSparkMAXPWM());
+  }
 
-    autoChooser.addDefaultOption("Blank", new SequentialCommandGroup());
-
+  private void createSwerveCommands() {
     driver.x().onTrue(new InstantCommand(() -> motionMode = MotionMode.LOCKDOWN));
 
     /*driver
@@ -103,7 +117,9 @@ public class Robot extends LoggedRobot {
                   motionMode = MotionMode.HEADING_CONTROLLER;
                   HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
                 }));*/
-
+  }
+  
+  private void createOperatorCommands() {
     operator
         .a()
         .onTrue(
@@ -156,7 +172,7 @@ public class Robot extends LoggedRobot {
                   intake.setVoltage(0);
                 }));*/
   }
-
+  
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
