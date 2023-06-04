@@ -59,8 +59,8 @@ public final class Constants {
   public static class ArmConstants {
     public static final double GEAR_RATIO = 17.1875;
     public static final int CURRENT_LIMIT = 30;
-    public static final double MAX_HEIGHT = DOUBLE_PLACEHOLDER;
-    public static final double MIN_HEIGHT = 0;
+    public static final double MAX_HEIGHT = 32;
+    public static final double MIN_HEIGHT = 1;
     public static final double ENCODER_OFFSET = 280;
     public static final double DIST_PER_ROTATION = 10.5;
     public static final double RETRACTED_POSITION = 0;
@@ -79,7 +79,7 @@ public final class Constants {
     public static final double GEAR_RATIO = 22400.0 / 171.0;
     public static final SupplyCurrentLimitConfiguration CURRENT_LIMIT =
         new SupplyCurrentLimitConfiguration(true, 20, 50, .25);
-    public static final double MAX_ANGLE = DOUBLE_PLACEHOLDER;
+    public static final double MAX_ANGLE = 90;
     public static final double MIN_ANGLE = DOUBLE_PLACEHOLDER;
     public static final double ENCODER_OFFSET = 109;
     public static final double EPSILON = 1;
@@ -93,7 +93,7 @@ public final class Constants {
   @UtilityClass
   public static class IntakeConstants {
     public static final double IDLE_VOLTAGE = 1;
-    public static final double INTAKE_VOLTAGE = 4.8;
+    public static final double INTAKE_VOLTAGE = 6;
     public static final double OUTTAKE_VOLTAGE = -4.8;
   }
 
