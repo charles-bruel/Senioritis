@@ -20,7 +20,7 @@ public class ArmIOSparkMAX implements ArmIO {
     armMotor.setCANTimeout(Constants.CAN_TIMEOUT_MS);
     armMotor.setSmartCurrentLimit(ArmConstants.CURRENT_LIMIT);
     armMotor.setInverted(false);
-    armMotor.setIdleMode(IdleMode.kBrake);
+    armMotor.setIdleMode(IdleMode.kCoast);
     armMotor.getEncoder().setPositionConversionFactor(1 / ArmConstants.GEAR_RATIO);
   }
 
