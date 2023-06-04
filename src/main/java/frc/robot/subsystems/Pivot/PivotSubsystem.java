@@ -4,7 +4,6 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Robot;
 import frc.robot.utilities.PIDFFController;
@@ -26,7 +25,7 @@ public class PivotSubsystem extends SubsystemBase {
   }
 
   public boolean isAtTarget() {
-    return Math.abs(targetAngle - inputs.absoluteEncoderAngle) < 1;
+    return Math.abs(targetAngle - inputs.absoluteEncoderAngle) < PivotConstants.EPSILON;
   }
 
   public void setTargetAngle(double newAngle) {
@@ -47,8 +46,8 @@ public class PivotSubsystem extends SubsystemBase {
     output =
         MathUtil.clamp(
             output,
-            -Constants.PivotConstants.MAX_OUTPUT_VOLTS,
-            Constants.PivotConstants.MAX_OUTPUT_VOLTS);
+            -PivotConstants.MAX_OUTPUT_VOLTS,
+            PivotConstants.MAX_OUTPUT_VOLTS);
     io.setVoltage(output);
 
     Logger.getInstance().recordOutput("Pivot/Target Angle", targetAngle);
@@ -64,6 +63,16 @@ public class PivotSubsystem extends SubsystemBase {
 
     public static Command setPosition(SuperstructureConfig config) {
       return setPosition(config.getPivotPosition());
+    }
+
+    public static Command setPositionBlocking(double angle) {
+      return edu.wpi.first.wpilibj2.command.Commands.run(
+              () -> Robot.pivot.setTargetAngle(angle), Robot.pivot)
+          .until(Robot.pivot::isAtTarget);
+    }
+
+    public static Command setPositionBlocking(SuperstructureConfig config) {
+      return setPositionBlocking(config.getPivotPosition());
     }
   }
 }
