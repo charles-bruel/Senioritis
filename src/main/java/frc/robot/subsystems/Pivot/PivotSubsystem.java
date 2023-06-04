@@ -46,10 +46,6 @@ public class PivotSubsystem extends SubsystemBase {
     io.updateInputs(inputs);
     double output = controller.calculate(inputs.absoluteEncoderAngle, targetAngle);
 
-    if (Robot.operator.y().getAsBoolean()) {
-      output = Robot.operator.getLeftY() * 6;
-    }
-
     output =
         MathUtil.clamp(output, -PivotConstants.MAX_OUTPUT_VOLTS, PivotConstants.MAX_OUTPUT_VOLTS);
     io.setVoltage(output);
