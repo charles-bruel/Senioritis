@@ -3,7 +3,8 @@ package frc.robot.subsystems.Pivot;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import frc.robot.Constants;
+import frc.robot.Constants.RobotMap;
+import frc.robot.Constants.PivotConstants;
 
 public class PivotIOFalcon implements PivotIO {
   private final WPI_TalonFX pivotMotorRight;
@@ -12,8 +13,8 @@ public class PivotIOFalcon implements PivotIO {
   private final DutyCycleEncoder absoluteEncoder;
 
   public PivotIOFalcon() {
-    pivotMotorRight = new WPI_TalonFX(Constants.RobotMap.PIVOT_RIGHT);
-    pivotMotorLeft = new WPI_TalonFX(Constants.RobotMap.PIVOT_LEFT);
+    pivotMotorRight = new WPI_TalonFX(RobotMap.PIVOT_RIGHT);
+    pivotMotorLeft = new WPI_TalonFX(RobotMap.PIVOT_LEFT);
 
     pivotMotorRight.setInverted(true);
 
@@ -23,11 +24,11 @@ public class PivotIOFalcon implements PivotIO {
     pivotMotorRight.setNeutralMode(NeutralMode.Coast);
     pivotMotorLeft.setNeutralMode(NeutralMode.Coast);
 
-    pivotMotorRight.configSupplyCurrentLimit(Constants.PivotConstants.CURRENT_LIMIT);
-    pivotMotorLeft.configSupplyCurrentLimit(Constants.PivotConstants.CURRENT_LIMIT);
+    pivotMotorRight.configSupplyCurrentLimit(PivotConstants.CURRENT_LIMIT);
+    pivotMotorLeft.configSupplyCurrentLimit(PivotConstants.CURRENT_LIMIT);
 
-    absoluteEncoder = new DutyCycleEncoder(Constants.RobotMap.PIVOT_ENCODER);
-    absoluteEncoder.setPositionOffset(Constants.PivotConstants.ENCODER_OFFSET);
+    absoluteEncoder = new DutyCycleEncoder(RobotMap.PIVOT_ENCODER);
+    absoluteEncoder.setPositionOffset(PivotConstants.ENCODER_OFFSET);
   }
 
   @Override
@@ -36,7 +37,7 @@ public class PivotIOFalcon implements PivotIO {
     inputs.motorEncoderAngle =
         pivotMotorRight.getSelectedSensorPosition(0)
             * (360.0 / 2048.0)
-            * (1 / Constants.PivotConstants.GEAR_RATIO);
+            * (1 / PivotConstants.GEAR_RATIO);
 
     inputs.motorRightOutputAmpsSupply = pivotMotorRight.getSupplyCurrent();
     inputs.motorLeftOutputAmpsSupply = pivotMotorLeft.getSupplyCurrent();
