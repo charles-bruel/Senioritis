@@ -224,11 +224,11 @@ public final class Constants {
 
   @UtilityClass
   public static class Superstructures {
-    public static final SuperstructureConfig TEST_INTAKE =
-        SuperstructureConfig.builder().intakeVoltage(5).build();
-    public static final SuperstructureConfig TEST_ARM =
-        SuperstructureConfig.builder().armHeight(10).build();
-    public static final SuperstructureConfig TEST_PIVOT =
-        SuperstructureConfig.builder().pivotPosition(30).build();
+    public static final SuperstructureConfig GROUND_INTAKE =
+        SuperstructureConfig.builder().pivotPosition(0).armHeight(0).build();
+    public static final SuperstructureConfig HOME_POSITION =
+        SuperstructureConfig.builder().pivotPosition(90).armHeight(0).build();
+    public static final SuperstructureConfig ARM_TEST =
+        SuperstructureConfig.builder().pivotPosition(45).armHeight(20).build();
   }
 }
