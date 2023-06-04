@@ -8,6 +8,7 @@ import lombok.NonNull;
 
 public class PIDFFGains {
   public TunableNumber kP, kI, kD, kS, kV, kG, tolerance;
+  public FeedforwardType feedforwardType;
   public static Set<String> names = new HashSet<>();
 
   private PIDFFGains(PIDFFGainsBuilder builder) {
@@ -18,6 +19,7 @@ public class PIDFFGains {
     kS = new TunableNumber(key + "kS", builder.kS);
     kV = new TunableNumber(key + "kV", builder.kV);
     kG = new TunableNumber(key + "kG", builder.kG);
+    feedforwardType = builder.feedforwardType;
     tolerance = new TunableNumber(key + "tolerance", builder.tolerance);
   }
 
@@ -58,12 +60,30 @@ public class PIDFFGains {
     return new PIDController(kP.get(), kI.get(), kD.get());
   }
 
+  public AbstractFeedForward createAbstractFeedForward() {
+    switch (feedforwardType) {
+      case ARM:
+        return new AbstractFeedForward.AbstractArmFeedForward(createArmFeedforward());
+      case ARM_DEG:
+        return new AbstractFeedForward.AbstractArmDegFeedForward(createArmDegFeedforward());
+      case ELEVAOTR:
+        return new AbstractFeedForward.AbstractElevatorFeedForward(createElevatorFeedforward());
+      case SIMPLE:
+        return new AbstractFeedForward.AbstractSimpleFeedForward(createWpilibFeedforward());
+    }
+    return null;
+  }
+
   public SimpleMotorFeedforward createWpilibFeedforward() {
     return new SimpleMotorFeedforward(kS.get(), kV.get());
   }
 
   public ArmFeedforward createArmFeedforward() {
     return new ArmFeedforward(kS.get(), kG.get(), kV.get());
+  }
+
+  public ArmFeedforwardDeg createArmDegFeedforward() {
+    return new ArmFeedforwardDeg(kS.get(), kG.get(), kV.get());
   }
 
   public ElevatorFeedforward createElevatorFeedforward() {
@@ -83,9 +103,17 @@ public class PIDFFGains {
     return new PIDFFGainsBuilder(name);
   }
 
+  public static enum FeedforwardType {
+    SIMPLE,
+    ARM,
+    ARM_DEG,
+    ELEVAOTR
+  }
+
   public static class PIDFFGainsBuilder {
     private String name;
     private double kP = 0, kI = 0, kD = 0, kS = 0, kV = 0, kG = 0;
+    private FeedforwardType feedforwardType = FeedforwardType.SIMPLE;
 
     // we wind up overwriting wpilib's default tolerance, which is 0.05, so set the same default
     // here to keep the same functionality
@@ -122,6 +150,21 @@ public class PIDFFGains {
 
     public PIDFFGainsBuilder kG(double kG) {
       this.kG = kG;
+      return this;
+    }
+
+    public PIDFFGainsBuilder armFF() {
+      this.feedforwardType = FeedforwardType.ARM;
+      return this;
+    }
+
+    public PIDFFGainsBuilder armDegFF() {
+      this.feedforwardType = FeedforwardType.ARM_DEG;
+      return this;
+    }
+
+    public PIDFFGainsBuilder elevatorFF() {
+      this.feedforwardType = FeedforwardType.ELEVAOTR;
       return this;
     }
 
