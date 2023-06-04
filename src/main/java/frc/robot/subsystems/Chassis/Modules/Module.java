@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Robot;
 import frc.robot.utilities.ModuleInfo;
 import frc.robot.utilities.PIDFFController;
 import org.littletonrobotics.junction.Logger;
@@ -36,7 +35,7 @@ public class Module extends SubsystemBase {
     io.updateInputs(inputs);
 
     state = new SwerveModuleState(0, Rotation2d.fromDegrees(inputs.aziEncoderPositionDeg));
-    azimuthController.enableContinuousInput(-180, 180);
+    azimuthController.enableContinuousInput(0, 360);
   }
 
   /**
@@ -47,7 +46,7 @@ public class Module extends SubsystemBase {
   public SwerveModuleState getMeasuredState() {
     return new SwerveModuleState(
         inputs.driveEncoderVelocityMetresPerSecond,
-        Rotation2d.fromDegrees(inputs.aziEncoderPositionDeg));
+        Rotation2d.fromDegrees(inputs.aziAbsoluteEncoderDegrees));
   }
 
   public SwerveModuleState getDesiredState() {
@@ -97,7 +96,7 @@ public class Module extends SubsystemBase {
   public void setDesiredState(SwerveModuleState desiredState) {
     state =
         SwerveModuleState.optimize(
-            desiredState, Rotation2d.fromDegrees(inputs.aziEncoderPositionDeg));
+            desiredState, Rotation2d.fromDegrees(inputs.aziAbsoluteEncoderDegrees));
   }
 
   /**
@@ -109,7 +108,7 @@ public class Module extends SubsystemBase {
         driveController.calculate(
             inputs.driveEncoderVelocityMetresPerSecond, state.speedMetersPerSecond);
 
-    boolean useMotorEncoder = Math.abs(inputs.aziEncoderPositionDeg) > 0.1 || Robot.isSimulation();
+    boolean useMotorEncoder = false;
     boolean useAbsoluteEncoder = Math.abs(inputs.aziAbsoluteEncoderDegrees) > 0.1;
     double feedbackVal;
     if (useMotorEncoder) {
@@ -128,8 +127,8 @@ public class Module extends SubsystemBase {
     recordOutput("Desired Drive Volts", driveOutput);
     recordOutput("Desired Azi Volts", turnOutput);
 
-    io.setDriveVoltage(driveOutput / 4);
-    io.setAzimuthVoltage(turnOutput / 4);
+    io.setDriveVoltage(driveOutput);
+    io.setAzimuthVoltage(turnOutput);
   }
 
   @Override
@@ -138,7 +137,7 @@ public class Module extends SubsystemBase {
 
     io.updateInputs(inputs);
     Logger.getInstance().processInputs("Swerve/" + information.getName(), inputs);
-    recordOutput("Azimuth Error", state.angle.getDegrees() - inputs.aziEncoderPositionDeg);
+    recordOutput("Azimuth Error", state.angle.getDegrees() - inputs.aziAbsoluteEncoderDegrees);
     recordOutput(
         "Drive Error", state.speedMetersPerSecond - inputs.driveEncoderVelocityMetresPerSecond);
     recordOutput("Target Speed", state.speedMetersPerSecond);

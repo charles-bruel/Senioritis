@@ -52,8 +52,8 @@ public class PivotIOFalcon implements PivotIO {
   public void seed(PivotInputs inputs) {
     pivotMotorRight.setSelectedSensorPosition(
         (inputs.absoluteEncoderAngle * PivotConstants.GEAR_RATIO * (2048.0 / 360.0)));
-        pivotMotorLeft.setSelectedSensorPosition(
-            (inputs.absoluteEncoderAngle * PivotConstants.GEAR_RATIO * (2048.0 / 360.0)));
+    pivotMotorLeft.setSelectedSensorPosition(
+        (inputs.absoluteEncoderAngle * PivotConstants.GEAR_RATIO * (2048.0 / 360.0)));
   }
 
   @Override

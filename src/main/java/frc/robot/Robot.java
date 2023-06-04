@@ -4,20 +4,19 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.SetSuperstructure;
 import frc.robot.subsystems.Arm.ArmIOSparkMAX;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Chassis.ChassisSubsystem;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Pivot.PivotIOFalcon;
 import frc.robot.subsystems.Pivot.PivotSubsystem;
-import frc.robot.utilities.HeadingController;
 import frc.robot.utilities.MotionHandler.MotionMode;
 import java.io.File;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -52,6 +51,22 @@ public class Robot extends LoggedRobot {
     createSwerveCommands();
 
     createOperatorCommands();
+
+    LEDStripInit();
+  }
+
+  public void LEDStripInit() {
+    AddressableLED m_led = new AddressableLED(9);
+    AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(60);
+    m_led.setLength(m_ledBuffer.getLength());
+    // Set the data
+    m_led.setData(m_ledBuffer);
+    m_led.start();
+    // throw some pretty lights on there
+    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
+      // Sets the specified LED to the HSV values for our Red
+      m_ledBuffer.setHSV(i, 0, 100, 94);
+    }
   }
 
   private void initializeLogging() {
@@ -82,41 +97,41 @@ public class Robot extends LoggedRobot {
   private void createSwerveCommands() {
     driver.x().onTrue(new InstantCommand(() -> motionMode = MotionMode.LOCKDOWN));
 
-    driver
-        .povUp()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  motionMode = MotionMode.HEADING_CONTROLLER;
-                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(0));
-                }));
+    // driver
+    //     .povUp()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               motionMode = MotionMode.HEADING_CONTROLLER;
+    //               HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(0));
+    //             }));
 
-    driver
-        .povLeft()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  motionMode = MotionMode.HEADING_CONTROLLER;
-                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(90));
-                }));
+    // driver
+    //     .povLeft()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               motionMode = MotionMode.HEADING_CONTROLLER;
+    //               HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(90));
+    //             }));
 
-    driver
-        .povDown()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  motionMode = MotionMode.HEADING_CONTROLLER;
-                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(180));
-                }));
+    // driver
+    //     .povDown()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               motionMode = MotionMode.HEADING_CONTROLLER;
+    //               HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(180));
+    //             }));
 
-    driver
-        .povRight()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  motionMode = MotionMode.HEADING_CONTROLLER;
-                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
-                }));
+    // driver
+    //     .povRight()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               motionMode = MotionMode.HEADING_CONTROLLER;
+    //               HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
+    //             }));
   }
 
   private void createOperatorCommands() {

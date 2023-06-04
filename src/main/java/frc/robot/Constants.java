@@ -84,10 +84,10 @@ public final class Constants {
     public static final double ENCODER_OFFSET = 109;
     public static final double EPSILON = 1;
 
-    public static final double MAX_OUTPUT_VOLTS = 6;
+    public static final double MAX_OUTPUT_VOLTS = 12;
 
     public static final PIDFFGains GAINS =
-        PIDFFGains.builder("PivotController").kP(0.25).kD(0).kI(0.01).build();
+        PIDFFGains.builder("PivotController").kP(0.1).kD(0).kG(1).kS(0.2).armDegFF().build();
   }
 
   @UtilityClass
@@ -207,7 +207,7 @@ public final class Constants {
           PIDFFGains.builder("BackRight/Default Azimuth").kP(0.06).tolerance(0.75).build();
 
       public static final PIDFFGains K_DEFAULT_DRIVING_GAINS =
-          PIDFFGains.builder("BackRight/Default Driving").kP(1.0).kS(0.15).kV(2).build();
+          PIDFFGains.builder("BackRight/Default Driving").kP(1.0).kS(0.15).kV(0).build();
 
       public static final PIDFFGains K_TRAJECTORY_CONTROLLER_GAINS_X =
           PIDFFGains.builder("Trajectory Controller X-Axis").kP(7).kD(0.0).build();
