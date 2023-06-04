@@ -44,10 +44,7 @@ public class PivotSubsystem extends SubsystemBase {
     io.updateInputs(inputs);
     double output = controller.calculate(inputs.absoluteEncoderAngle, targetAngle);
     output =
-        MathUtil.clamp(
-            output,
-            -PivotConstants.MAX_OUTPUT_VOLTS,
-            PivotConstants.MAX_OUTPUT_VOLTS);
+        MathUtil.clamp(output, -PivotConstants.MAX_OUTPUT_VOLTS, PivotConstants.MAX_OUTPUT_VOLTS);
     io.setVoltage(output);
 
     Logger.getInstance().recordOutput("Pivot/Target Angle", targetAngle);

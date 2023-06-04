@@ -4,9 +4,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import frc.robot.Constants.RobotMap;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.RobotMap;
 
 public class ArmIOSparkMAX implements ArmIO {
 
