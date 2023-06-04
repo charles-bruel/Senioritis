@@ -3,6 +3,7 @@ package frc.robot.subsystems.Pivot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Robot;
@@ -22,6 +23,7 @@ public class PivotSubsystem extends SubsystemBase {
     controller = new PIDFFController(PivotConstants.GAINS);
     inputs = new PivotInputsAutoLogged();
     io.updateInputs(inputs);
+    io.seed(inputs);
   }
 
   public boolean isAtTarget() {
@@ -62,14 +64,13 @@ public class PivotSubsystem extends SubsystemBase {
       return setPosition(config.getPivotPosition());
     }
 
-    public static Command setPositionBlocking(double angle) {
-      return edu.wpi.first.wpilibj2.command.Commands.run(
-              () -> Robot.pivot.setTargetAngle(angle), Robot.pivot)
+    public static Command setPositionAndWait(double angle) {
+      return new RunCommand(() -> Robot.pivot.setTargetAngle(angle), Robot.pivot)
           .until(Robot.pivot::isAtTarget);
     }
 
-    public static Command setPositionBlocking(SuperstructureConfig config) {
-      return setPositionBlocking(config.getPivotPosition());
+    public static Command setPositionAndWait(SuperstructureConfig config) {
+      return setPositionAndWait(config.getPivotPosition());
     }
   }
 }

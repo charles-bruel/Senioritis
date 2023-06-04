@@ -4,20 +4,20 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.SetSuperstructure;
 import frc.robot.subsystems.Arm.ArmIOSparkMAX;
 import frc.robot.subsystems.Arm.ArmSubsystem;
-import frc.robot.subsystems.Chassis.ChassisIOMXP;
 import frc.robot.subsystems.Chassis.ChassisSubsystem;
-import frc.robot.subsystems.Chassis.Modules.ModuleIOSparkMAX;
-import frc.robot.subsystems.Intake.IntakeIOSparkMAXPWM;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Pivot.PivotIOFalcon;
 import frc.robot.subsystems.Pivot.PivotSubsystem;
+import frc.robot.utilities.HeadingController;
 import frc.robot.utilities.MotionHandler.MotionMode;
 import java.io.File;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -66,23 +66,23 @@ public class Robot extends LoggedRobot {
   }
 
   private void initializeSubsystems() {
-    swerveDrive =
-        new ChassisSubsystem(
-            new ChassisIOMXP(),
-            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_LEFT),
-            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_RIGHT),
-            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
-            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
+    // swerveDrive =
+    //     new ChassisSubsystem(
+    //         new ChassisIOMXP(),
+    //         new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_LEFT),
+    //         new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_RIGHT),
+    //         new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
+    //         new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
 
     arm = new ArmSubsystem(new ArmIOSparkMAX());
     pivot = new PivotSubsystem(new PivotIOFalcon());
-    intake = new IntakeSubsystem(new IntakeIOSparkMAXPWM());
+    // intake = new IntakeSubsystem(new IntakeIOSparkMAXPWM());
   }
 
   private void createSwerveCommands() {
     driver.x().onTrue(new InstantCommand(() -> motionMode = MotionMode.LOCKDOWN));
 
-    /*driver
+    driver
         .povUp()
         .onTrue(
             new InstantCommand(
@@ -116,7 +116,11 @@ public class Robot extends LoggedRobot {
                 () -> {
                   motionMode = MotionMode.HEADING_CONTROLLER;
                   HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
-                }));*/
+                }));
+
+    driver.leftBumper().onTrue(new SetSuperstructure(Constants.Superstructures.GROUND_INTAKE));
+
+    driver.rightBumper().onTrue(new SetSuperstructure(Constants.Superstructures.HOME_POSITION));
   }
 
   private void createOperatorCommands() {
@@ -164,7 +168,7 @@ public class Robot extends LoggedRobot {
     CommandScheduler.getInstance().run();
 
     if (driver.getRightX() > 0.5) {
-      // motionMode = MotionMode.FULL_DRIVE;
+      motionMode = MotionMode.FULL_DRIVE;
     }
   }
 
@@ -198,7 +202,7 @@ public class Robot extends LoggedRobot {
     if (autoCommand != null) {
       autoCommand.cancel();
     }
-    // motionMode = MotionMode.FULL_DRIVE;
+    motionMode = MotionMode.FULL_DRIVE;
   }
 
   @Override

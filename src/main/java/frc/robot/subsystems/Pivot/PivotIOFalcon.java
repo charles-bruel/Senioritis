@@ -49,6 +49,13 @@ public class PivotIOFalcon implements PivotIO {
     inputs.motorLeftOutputVolts = pivotMotorLeft.getMotorOutputVoltage();
   }
 
+  public void seed(PivotInputs inputs) {
+    pivotMotorRight.setSelectedSensorPosition(
+        (inputs.absoluteEncoderAngle * PivotConstants.GEAR_RATIO * (2048.0 / 360.0)));
+        pivotMotorLeft.setSelectedSensorPosition(
+            (inputs.absoluteEncoderAngle * PivotConstants.GEAR_RATIO * (2048.0 / 360.0)));
+  }
+
   @Override
   public void setVoltage(double volts) {
     pivotMotorRight.setVoltage(volts);

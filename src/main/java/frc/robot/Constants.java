@@ -185,7 +185,7 @@ public final class Constants {
             .driveCANId(6)
             .aziCANId(5)
             .CANCoder(28)
-            .offset(-213.39)
+            .offset(-33.39)
             .location(BACK_LEFT_LOCATION)
             .build();
 

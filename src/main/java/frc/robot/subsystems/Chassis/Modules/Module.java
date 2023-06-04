@@ -128,8 +128,8 @@ public class Module extends SubsystemBase {
     recordOutput("Desired Drive Volts", driveOutput);
     recordOutput("Desired Azi Volts", turnOutput);
 
-    io.setDriveVoltage(driveOutput);
-    io.setAzimuthVoltage(turnOutput);
+    io.setDriveVoltage(driveOutput / 4);
+    io.setAzimuthVoltage(turnOutput / 4);
   }
 
   @Override

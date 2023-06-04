@@ -19,4 +19,6 @@ public interface PivotIO {
   public void updateInputs(PivotInputs inputs);
 
   public void setVoltage(double volts);
+
+  public void seed(PivotInputs inputs);
 }
