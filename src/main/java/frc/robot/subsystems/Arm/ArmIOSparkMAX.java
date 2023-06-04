@@ -37,7 +37,8 @@ public class ArmIOSparkMAX implements ArmIO {
     // This gets the encoder position normalized to 0 - 360, and where the encoder is at 0 at the 0
     // position
     inputs.absoluteEncoderAngle =
-        ((absoluteEncoder.getAbsolutePosition() * 360) - Constants.ArmConstants.ENCODER_OFFSET)
+        ((absoluteEncoder.getAbsolutePosition() * 360 + 360)
+                - Constants.ArmConstants.ENCODER_OFFSET)
             % 360;
 
     // We now determine if it has rolled over or under
@@ -63,7 +64,7 @@ public class ArmIOSparkMAX implements ArmIO {
     inputs.absoluteEncoderCumAngle = absoluteEncoderCumAngleBase + inputs.absoluteEncoderAngle;
 
     inputs.absoluteEncoderHeight =
-        inputs.absoluteEncoderCumAngle * Constants.ArmConstants.DIST_PER_ROTATION;
+        inputs.absoluteEncoderCumAngle * Constants.ArmConstants.DIST_PER_ROTATION / 360;
 
     inputs.motorEncoderHeight =
         armMotor.getEncoder().getPosition() * ArmConstants.DIST_PER_ROTATION;
