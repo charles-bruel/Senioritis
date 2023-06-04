@@ -67,12 +67,12 @@ public class Robot extends LoggedRobot {
 
   private void initializeSubsystems() {
     swerveDrive =
-    new ChassisSubsystem(
-        new ChassisIOMXP(),
-        new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_LEFT),
-        new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_RIGHT),
-        new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
-        new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
+        new ChassisSubsystem(
+            new ChassisIOMXP(),
+            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_LEFT),
+            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_RIGHT),
+            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
+            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
 
     arm = new ArmSubsystem(new ArmIOSparkMAX());
     pivot = new PivotSubsystem(new PivotIOFalcon());
@@ -118,7 +118,7 @@ public class Robot extends LoggedRobot {
                   HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
                 }));*/
   }
-  
+
   private void createOperatorCommands() {
     operator
         .a()
@@ -143,36 +143,22 @@ public class Robot extends LoggedRobot {
                 }));
 
     operator
-        .y()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  intake.setVoltage(12);
-                }));
-    operator
-        .y()
-        .onFalse(
-            new InstantCommand(
-                () -> {
-                  intake.setVoltage(0);
-                }));
+        .leftBumper()
+        .onTrue(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.INTAKE_VOLTAGE));
 
-    /*operator
-        .x()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  intake.setVoltage(-12);
-                }));
     operator
-        .x()
-        .onFalse(
-            new InstantCommand(
-                () -> {
-                  intake.setVoltage(0);
-                }));*/
+        .leftBumper()
+        .onFalse(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE));
+
+    operator
+        .rightBumper()
+        .onTrue(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.OUTTAKE_VOLTAGE));
+
+    operator
+        .rightBumper()
+        .onFalse(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE));
   }
-  
+
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
