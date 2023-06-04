@@ -117,10 +117,6 @@ public class Robot extends LoggedRobot {
                   motionMode = MotionMode.HEADING_CONTROLLER;
                   HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
                 }));
-
-    driver.leftBumper().onTrue(new SetSuperstructure(Constants.Superstructures.GROUND_INTAKE));
-
-    driver.rightBumper().onTrue(new SetSuperstructure(Constants.Superstructures.HOME_POSITION));
   }
 
   private void createOperatorCommands() {
