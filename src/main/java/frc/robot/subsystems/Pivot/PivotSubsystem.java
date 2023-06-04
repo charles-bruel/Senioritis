@@ -26,7 +26,7 @@ public class PivotSubsystem extends SubsystemBase {
   }
 
   public boolean isAtTarget() {
-    return Math.abs(targetAngle - inputs.absoluteEncoderAngle) < 1;
+    return Math.abs(targetAngle - inputs.absoluteEncoderAngle) < PivotConstants.EPSILON;
   }
 
   public void setTargetAngle(double newAngle) {

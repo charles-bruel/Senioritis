@@ -32,7 +32,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public boolean isAtTarget() {
-    return Math.abs(targetHeight - inputs.motorEncoderHeight) < 1;
+    return Math.abs(targetHeight - inputs.motorEncoderHeight) < ArmConstants.EPSILON;
   }
 
   @Override

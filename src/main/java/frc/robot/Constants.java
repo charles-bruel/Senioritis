@@ -64,6 +64,7 @@ public final class Constants {
     public static final double ENCODER_OFFSET = DOUBLE_PLACEHOLDER;
     public static final double DIST_PER_ROTATION = 10.5;
     public static final double RETRACTED_POSITION = 0;
+    public static final double EPSILON = 1;
 
     public static final PIDFFGains GAINS =
         PIDFFGains.builder("ArmController")
@@ -81,6 +82,7 @@ public final class Constants {
     public static final double MAX_ANGLE = DOUBLE_PLACEHOLDER;
     public static final double MIN_ANGLE = DOUBLE_PLACEHOLDER;
     public static final double ENCODER_OFFSET = 109;
+    public static final double EPSILON = 1;
 
     public static final double MAX_OUTPUT_VOLTS = 6;
 
