@@ -1,15 +1,14 @@
 package frc.robot.utilities;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
 public class PIDFFController extends PIDController {
-  private SimpleMotorFeedforward feedforward;
+  private AbstractFeedForward feedforward;
 
   public PIDFFController(PIDFFGains gains) {
     super(gains.kP.get(), gains.kI.get(), gains.kD.get());
 
-    feedforward = gains.createWpilibFeedforward();
+    feedforward = gains.createAbstractFeedForward();
     setTolerance(gains.tolerance.get());
   }
 
@@ -21,6 +20,6 @@ public class PIDFFController extends PIDController {
 
   @Override
   public double calculate(double measurement) {
-    return super.calculate(measurement) + feedforward.calculate(getSetpoint());
+    return super.calculate(measurement) + feedforward.calculate(getSetpoint(), getVelocityError());
   }
 }
