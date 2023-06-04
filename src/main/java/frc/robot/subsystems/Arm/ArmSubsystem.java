@@ -58,12 +58,14 @@ public class ArmSubsystem extends SubsystemBase {
       return setHeight(config.getArmHeight());
     }
 
-    public static Command setHeightAndWait(double targetHeight) {
-      return setHeight(targetHeight).repeatedly().until(() -> Robot.arm.isAtTarget());
+    public static Command setHeightBlocking(double angle) {
+      return edu.wpi.first.wpilibj2.command.Commands.run(
+              () -> Robot.arm.setTargetHeight(angle), Robot.arm)
+          .until(Robot.arm::isAtTarget);
     }
 
-    public static Command setHeightAndWait(SuperstructureConfig config) {
-      return setHeightAndWait(config.getArmHeight());
+    public static Command setHeightBlocking(SuperstructureConfig config) {
+      return setHeightBlocking(config.getArmHeight());
     }
   }
 }

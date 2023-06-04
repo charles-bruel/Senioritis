@@ -65,5 +65,15 @@ public class PivotSubsystem extends SubsystemBase {
     public static Command setPosition(SuperstructureConfig config) {
       return setPosition(config.getPivotPosition());
     }
+
+    public static Command setPositionBlocking(double angle) {
+      return edu.wpi.first.wpilibj2.command.Commands.run(
+              () -> Robot.pivot.setTargetAngle(angle), Robot.pivot)
+          .until(Robot.pivot::isAtTarget);
+    }
+
+    public static Command setPositionBlocking(SuperstructureConfig config) {
+      return setPositionBlocking(config.getPivotPosition());
+    }
   }
 }
