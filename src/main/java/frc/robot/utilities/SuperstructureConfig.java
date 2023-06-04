@@ -7,5 +7,4 @@ import lombok.Getter;
 public class SuperstructureConfig {
   @Getter private double pivotPosition;
   @Getter private double armHeight;
-  @Getter private double intakeVoltage;
 }

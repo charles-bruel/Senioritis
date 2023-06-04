@@ -1,13 +1,13 @@
 package frc.robot.subsystems.Intake;
 
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
-import frc.robot.Constants;
+import frc.robot.Constants.RobotMap;
 
 public class IntakeIOSparkMAXPWM implements IntakeIO {
   private final PWMSparkMax intakeMotor;
 
   public IntakeIOSparkMAXPWM() {
-    intakeMotor = new PWMSparkMax(Constants.RobotMap.INTAKE);
+    intakeMotor = new PWMSparkMax(RobotMap.INTAKE);
   }
 
   @Override

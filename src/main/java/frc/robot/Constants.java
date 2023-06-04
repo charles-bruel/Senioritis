@@ -59,10 +59,12 @@ public final class Constants {
   public static class ArmConstants {
     public static final double GEAR_RATIO = 17.1875;
     public static final int CURRENT_LIMIT = 30;
-    public static final double MAX_HEIGHT = DOUBLE_PLACEHOLDER;
-    public static final double MIN_HEIGHT = 0;
-    public static final double ENCODER_OFFSET = DOUBLE_PLACEHOLDER;
+    public static final double MAX_HEIGHT = 32;
+    public static final double MIN_HEIGHT = 1;
+    public static final double ENCODER_OFFSET = 280;
     public static final double DIST_PER_ROTATION = 10.5;
+    public static final double RETRACTED_POSITION = 0;
+    public static final double EPSILON = 1;
 
     public static final PIDFFGains GAINS =
         PIDFFGains.builder("ArmController")
@@ -77,9 +79,10 @@ public final class Constants {
     public static final double GEAR_RATIO = 22400.0 / 171.0;
     public static final SupplyCurrentLimitConfiguration CURRENT_LIMIT =
         new SupplyCurrentLimitConfiguration(true, 20, 50, .25);
-    public static final double MAX_ANGLE = DOUBLE_PLACEHOLDER;
+    public static final double MAX_ANGLE = 90;
     public static final double MIN_ANGLE = DOUBLE_PLACEHOLDER;
     public static final double ENCODER_OFFSET = 109;
+    public static final double EPSILON = 1;
 
     public static final double MAX_OUTPUT_VOLTS = 6;
 
@@ -88,7 +91,11 @@ public final class Constants {
   }
 
   @UtilityClass
-  public static class IntakeConstants {}
+  public static class IntakeConstants {
+    public static final double IDLE_VOLTAGE = 1;
+    public static final double INTAKE_VOLTAGE = 6;
+    public static final double OUTTAKE_VOLTAGE = -4.8;
+  }
 
   @UtilityClass
   public static final class DriveConstants {
@@ -220,11 +227,11 @@ public final class Constants {
 
   @UtilityClass
   public static class Superstructures {
-    public static final SuperstructureConfig TEST_INTAKE =
-        SuperstructureConfig.builder().intakeVoltage(5).build();
-    public static final SuperstructureConfig TEST_ARM =
-        SuperstructureConfig.builder().armHeight(10).build();
-    public static final SuperstructureConfig TEST_PIVOT =
-        SuperstructureConfig.builder().pivotPosition(30).build();
+    public static final SuperstructureConfig GROUND_INTAKE =
+        SuperstructureConfig.builder().pivotPosition(0).armHeight(0).build();
+    public static final SuperstructureConfig HOME_POSITION =
+        SuperstructureConfig.builder().pivotPosition(90).armHeight(0).build();
+    public static final SuperstructureConfig ARM_TEST =
+        SuperstructureConfig.builder().pivotPosition(45).armHeight(20).build();
   }
 }

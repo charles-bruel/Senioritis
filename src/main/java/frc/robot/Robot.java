@@ -43,6 +43,18 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotInit() {
+    initializeLogging();
+
+    initializeSubsystems();
+
+    autoChooser.addDefaultOption("Blank", new SequentialCommandGroup());
+
+    createSwerveCommands();
+
+    createOperatorCommands();
+  }
+
+  private void initializeLogging() {
     Logger.getInstance().addDataReceiver(new NT4Publisher());
     if (isReal()) {
       File sda1 = new File(Constants.Logging.sda1Dir);
@@ -51,7 +63,9 @@ public class Robot extends LoggedRobot {
       }
     }
     Logger.getInstance().start();
+  }
 
+  private void initializeSubsystems() {
     swerveDrive =
         new ChassisSubsystem(
             new ChassisIOMXP(),
@@ -63,9 +77,9 @@ public class Robot extends LoggedRobot {
     arm = new ArmSubsystem(new ArmIOSparkMAX());
     pivot = new PivotSubsystem(new PivotIOFalcon());
     intake = new IntakeSubsystem(new IntakeIOSparkMAXPWM());
+  }
 
-    autoChooser.addDefaultOption("Blank", new SequentialCommandGroup());
-
+  private void createSwerveCommands() {
     driver.x().onTrue(new InstantCommand(() -> motionMode = MotionMode.LOCKDOWN));
 
     /*driver
@@ -103,7 +117,9 @@ public class Robot extends LoggedRobot {
                   motionMode = MotionMode.HEADING_CONTROLLER;
                   HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
                 }));*/
+  }
 
+  private void createOperatorCommands() {
     operator
         .a()
         .onTrue(
@@ -127,34 +143,20 @@ public class Robot extends LoggedRobot {
                 }));
 
     operator
-        .y()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  intake.setVoltage(12);
-                }));
-    operator
-        .y()
-        .onFalse(
-            new InstantCommand(
-                () -> {
-                  intake.setVoltage(0);
-                }));
+        .leftBumper()
+        .onTrue(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.INTAKE_VOLTAGE));
 
-    /*operator
-        .x()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  intake.setVoltage(-12);
-                }));
     operator
-        .x()
-        .onFalse(
-            new InstantCommand(
-                () -> {
-                  intake.setVoltage(0);
-                }));*/
+        .leftBumper()
+        .onFalse(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE));
+
+    operator
+        .rightBumper()
+        .onTrue(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.OUTTAKE_VOLTAGE));
+
+    operator
+        .rightBumper()
+        .onFalse(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE));
   }
 
   @Override
