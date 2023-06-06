@@ -5,6 +5,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utilities.ModuleInfo;
+import frc.robot.utilities.NtHelper;
 import frc.robot.utilities.PIDFFController;
 import org.littletonrobotics.junction.Logger;
 
@@ -96,7 +97,14 @@ public class Module extends SubsystemBase {
   public void setDesiredState(SwerveModuleState desiredState) {
     state =
         SwerveModuleState.optimize(
-            desiredState, Rotation2d.fromDegrees(inputs.aziAbsoluteEncoderDegrees));
+            desiredState, Rotation2d.fromDegrees(inputs.aziEncoderPositionDeg));
+    // state = desiredState;
+    NtHelper.setDouble(
+        "/AdvantageKit/Swerve/" + information.getName() + "/desiredAziAbsoluteEncoderAngle",
+        state.angle.getDegrees());
+    NtHelper.setDouble(
+        "/AdvantageKit/Swerve/" + information.getName() + "/desiredSpeed",
+        state.speedMetersPerSecond);
   }
 
   /**
@@ -127,7 +135,12 @@ public class Module extends SubsystemBase {
     recordOutput("Desired Drive Volts", driveOutput);
     recordOutput("Desired Azi Volts", turnOutput);
 
-    io.setDriveVoltage(driveOutput);
+    if (state.speedMetersPerSecond == 0.0) {
+      io.setDriveVoltage(0);
+    } else {
+      io.setDriveVoltage(driveOutput);
+    }
+
     io.setAzimuthVoltage(turnOutput);
   }
 
