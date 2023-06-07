@@ -1,13 +1,15 @@
 package frc.robot.subsystems.Pivot;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.Robot;
-import frc.robot.utilities.PIDFFController;
+import frc.robot.utilities.ArmFeedforwardDeg;
 import frc.robot.utilities.SuperstructureConfig;
 import org.littletonrobotics.junction.Logger;
 
@@ -15,12 +17,15 @@ public class PivotSubsystem extends SubsystemBase {
 
   private PivotIO io;
   private PivotInputsAutoLogged inputs;
-  private final PIDFFController controller;
+  private final ProfiledPIDController controller;
+  private final ArmFeedforwardDeg feedForward;
+  private double lastPosition;
   private double targetAngle = 90;
 
   public PivotSubsystem(PivotIO pivotIO) {
     io = pivotIO;
-    controller = new PIDFFController(PivotConstants.GAINS);
+    controller = PivotConstants.GAINS.createProfiledPIDController(new Constraints(70, 50));
+    feedForward = PivotConstants.GAINS.createArmDegFeedforward();
     inputs = new PivotInputsAutoLogged();
     io.updateInputs(inputs);
     io.seed(inputs);
@@ -43,8 +48,10 @@ public class PivotSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    double velocity = (inputs.absoluteEncoderAngle - lastPosition) / 0.02;
     io.updateInputs(inputs);
     double output = controller.calculate(inputs.absoluteEncoderAngle, targetAngle);
+    output += feedForward.calculate(inputs.absoluteEncoderAngle, velocity);
 
     output =
         MathUtil.clamp(output, -PivotConstants.MAX_OUTPUT_VOLTS, PivotConstants.MAX_OUTPUT_VOLTS);
@@ -54,6 +61,7 @@ public class PivotSubsystem extends SubsystemBase {
     Logger.getInstance().recordOutput("Pivot/Output", output);
 
     Logger.getInstance().processInputs("Pivot", inputs);
+    lastPosition = inputs.absoluteEncoderAngle;
   }
 
   public static class Commands {

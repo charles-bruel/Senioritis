@@ -87,7 +87,7 @@ public final class Constants {
     public static final double MAX_OUTPUT_VOLTS = 12;
 
     public static final PIDFFGains GAINS =
-        PIDFFGains.builder("PivotController").kP(0.1).kD(0).kG(1).kS(0.2).armDegFF().build();
+        PIDFFGains.builder("PivotController").kP(0.3).kD(0.03).kG(0.6).kS(0.2).armDegFF().build();
   }
 
   @UtilityClass
