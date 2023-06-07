@@ -60,9 +60,9 @@ public final class Constants {
     public static final double GEAR_RATIO = 17.1875;
     public static final int CURRENT_LIMIT = 30;
     public static final double MAX_HEIGHT = 32;
-    public static final double MIN_HEIGHT = 1;
-    public static final double ENCODER_OFFSET = 280;
-    public static final double DIST_PER_ROTATION = 10.5;
+    public static final double MIN_HEIGHT = 0;
+    public static final double ENCODER_OFFSET = 0;
+    public static final double DIST_PER_ROTATION = -10.5;
     public static final double RETRACTED_POSITION = 0;
     public static final double EPSILON = 1;
 
@@ -70,7 +70,8 @@ public final class Constants {
         PIDFFGains.builder("ArmController")
             .kP(DOUBLE_PLACEHOLDER)
             .kD(DOUBLE_PLACEHOLDER)
-            .kG(DOUBLE_PLACEHOLDER)
+            .kG(6)
+            .elevatorFF()
             .build();
   }
 
@@ -87,7 +88,14 @@ public final class Constants {
     public static final double MAX_OUTPUT_VOLTS = 12;
 
     public static final PIDFFGains GAINS =
-        PIDFFGains.builder("PivotController").kP(0.3).kD(0.03).kG(0.6).kS(0.2).armDegFF().build();
+        PIDFFGains.builder("PivotController")
+            .kP(0.15)
+            .kD(0.01)
+            .kG(0.6)
+            .kS(0.6)
+            .armDegFF()
+            .tolerance(0.5)
+            .build();
   }
 
   @UtilityClass
