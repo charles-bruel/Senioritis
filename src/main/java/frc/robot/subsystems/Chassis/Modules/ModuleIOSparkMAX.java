@@ -59,8 +59,8 @@ public class ModuleIOSparkMAX implements ModuleIO {
       driver.setInverted(true);
     }
 
-    driver.setIdleMode(IdleMode.kCoast);
-    azimuth.setIdleMode(IdleMode.kCoast);
+    driver.setIdleMode(IdleMode.kBrake);
+    azimuth.setIdleMode(IdleMode.kBrake);
 
     getDriveEncoder().setPositionConversionFactor(Constants.DriveConstants.DRIVE_DIST_PER_PULSE);
 
@@ -80,10 +80,10 @@ public class ModuleIOSparkMAX implements ModuleIO {
   public double simplifyDegrees(double degrees) {
     double result = degrees;
 
-    while (result > 360) {
+    while (result > 180) {
       result -= 360;
     }
-    while (result <= 0) {
+    while (result <= -180) {
       result += 360;
     }
     return result;
