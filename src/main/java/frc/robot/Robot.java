@@ -9,11 +9,13 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.SetSuperstructure;
 import frc.robot.subsystems.Arm.ArmIOSparkMAX;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Chassis.ChassisIOMXP;
 import frc.robot.subsystems.Chassis.ChassisSubsystem;
 import frc.robot.subsystems.Chassis.Modules.ModuleIOSparkMAX;
+import frc.robot.subsystems.Intake.IntakeIOSparkMAXPWM;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Pivot.PivotIOFalcon;
 import frc.robot.subsystems.Pivot.PivotSubsystem;
@@ -77,7 +79,7 @@ public class Robot extends LoggedRobot {
 
     arm = new ArmSubsystem(new ArmIOSparkMAX());
     pivot = new PivotSubsystem(new PivotIOFalcon());
-    // intake = new IntakeSubsystem(new IntakeIOSparkMAXPWM());
+    intake = new IntakeSubsystem(new IntakeIOSparkMAXPWM());
     leds = new LEDController();
   }
 
@@ -125,13 +127,9 @@ public class Robot extends LoggedRobot {
   private void createOperatorCommands() {
     operator.a().onTrue(ArmSubsystem.Commands.setHeight(1));
     operator.b().onTrue(ArmSubsystem.Commands.setHeight(5));
-    operator
-        .y()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  ArmSubsystem.Commands.setHeight(15);
-                }));
+    operator.y().onTrue(ArmSubsystem.Commands.setHeight(15));
+
+    operator.x().onTrue(new SetSuperstructure(Constants.Superstructures.HOME_POSITION));
 
     operator
         .leftBumper()
