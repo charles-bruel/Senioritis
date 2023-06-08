@@ -70,9 +70,11 @@ public final class Constants {
     public static final double RETRACTED_POSITION = 0;
     public static final double EPSILON = 1;
 
+    public static final double MAX_OUTPUT_VOLTS = 12;
+
     public static final PIDFFGains GAINS =
         PIDFFGains.builder("ArmController")
-            .kP(DOUBLE_PLACEHOLDER)
+            .kP(0.1)
             .kD(DOUBLE_PLACEHOLDER)
             .kG(6)
             .elevatorFF()

@@ -18,14 +18,14 @@ public class PivotSubsystem extends SubsystemBase {
   private PivotIO io;
   private PivotInputsAutoLogged inputs;
   private final ProfiledPIDController controller;
-  private final ArmFeedforwardDeg feedForward;
+  private final ArmFeedforwardDeg feedforward;
   private double lastPosition;
   private double targetAngle = 90;
 
   public PivotSubsystem(PivotIO pivotIO) {
     io = pivotIO;
     controller = PivotConstants.GAINS.createProfiledPIDController(new Constraints(300, 300));
-    feedForward = PivotConstants.GAINS.createArmDegFeedforward();
+    feedforward = PivotConstants.GAINS.createArmDegFeedforward();
     inputs = new PivotInputsAutoLogged();
     io.updateInputs(inputs);
     io.seed(inputs);
@@ -46,17 +46,21 @@ public class PivotSubsystem extends SubsystemBase {
     return targetAngle;
   }
 
+  public double getCurrentAngle() {
+    return inputs.absoluteEncoderAngle;
+  }
+
   @Override
   public void periodic() {
     double velocity = (inputs.absoluteEncoderAngle - lastPosition) / 0.02;
     io.updateInputs(inputs);
     double output = controller.calculate(inputs.absoluteEncoderAngle, targetAngle);
-    output += feedForward.calculate(inputs.absoluteEncoderAngle, velocity);
+    output += feedforward.calculate(inputs.absoluteEncoderAngle, velocity);
 
     // Code to create a good way to create setpoints
     double v = Robot.operator.getLeftY();
     v = MathUtil.applyDeadband(v, 0.2);
-    if(v != 0) {
+    if (v != 0) {
       output = v * 6;
       targetAngle = inputs.absoluteEncoderAngle;
     }

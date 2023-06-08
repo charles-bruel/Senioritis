@@ -94,6 +94,10 @@ public class PIDFFGains {
     return new ElevatorFeedforward(kS.get(), kG.get(), kV.get());
   }
 
+  public RotatingElevatorFeedforward createRotatingElevatorFeedforward() {
+    return new RotatingElevatorFeedforward(kS.get(), kG.get(), kV.get());
+  }
+
   public ProfiledPIDController createProfiledPIDController(
       TrapezoidProfile.Constraints constraints) {
     return new ProfiledPIDController(kP.get(), kI.get(), kD.get(), constraints);
