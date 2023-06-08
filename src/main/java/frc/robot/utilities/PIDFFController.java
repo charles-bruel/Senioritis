@@ -20,6 +20,10 @@ public class PIDFFController extends PIDController {
 
   @Override
   public double calculate(double measurement) {
-    return super.calculate(measurement) + feedforward.calculate(measurement, getVelocityError());
+    double value = super.calculate(measurement);
+    if (feedforward != null) {
+      value += feedforward.calculate(measurement, getVelocityError());
+    }
+    return value;
   }
 }
