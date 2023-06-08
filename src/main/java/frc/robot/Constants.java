@@ -110,8 +110,8 @@ public final class Constants {
   @UtilityClass
   public static class IntakeConstants {
     public static final double IDLE_VOLTAGE = 1;
-    public static final double INTAKE_VOLTAGE = 6;
-    public static final double OUTTAKE_VOLTAGE = -12;
+    public static final double INTAKE_VOLTAGE = 4;
+    public static final double OUTTAKE_VOLTAGE = -4;
   }
 
   @UtilityClass
