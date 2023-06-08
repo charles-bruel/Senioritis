@@ -53,6 +53,10 @@ public final class Constants {
     // Absolute Encoders
     public static final int PIVOT_ENCODER = 1;
     public static final int ARM_ENCODER = 0;
+
+    // LED stuff (very important)
+    public static final int LED_PORT = 9;
+    public static final int LED_COUNT = 60;
   }
 
   @UtilityClass
