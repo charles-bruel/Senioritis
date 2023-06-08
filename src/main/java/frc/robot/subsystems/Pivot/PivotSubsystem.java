@@ -53,6 +53,14 @@ public class PivotSubsystem extends SubsystemBase {
     double output = controller.calculate(inputs.absoluteEncoderAngle, targetAngle);
     output += feedForward.calculate(inputs.absoluteEncoderAngle, velocity);
 
+    // Code to create a good way to create setpoints
+    double v = Robot.operator.getLeftY();
+    v = MathUtil.applyDeadband(v, 0.2);
+    if(v != 0) {
+      output = v * 6;
+      targetAngle = inputs.absoluteEncoderAngle;
+    }
+
     output =
         MathUtil.clamp(output, -PivotConstants.MAX_OUTPUT_VOLTS, PivotConstants.MAX_OUTPUT_VOLTS);
     io.setVoltage(output);
