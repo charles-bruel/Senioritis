@@ -70,6 +70,10 @@ public class PIDFFGains {
         return new AbstractFeedForward.AbstractElevatorFeedForward(createElevatorFeedforward());
       case SIMPLE:
         return new AbstractFeedForward.AbstractSimpleFeedForward(createWpilibFeedforward());
+      case NONE:
+        break;
+      default:
+        break;
     }
     return null;
   }
@@ -104,6 +108,7 @@ public class PIDFFGains {
   }
 
   public static enum FeedforwardType {
+    NONE,
     SIMPLE,
     ARM,
     ARM_DEG,
@@ -113,7 +118,7 @@ public class PIDFFGains {
   public static class PIDFFGainsBuilder {
     private String name;
     private double kP = 0, kI = 0, kD = 0, kS = 0, kV = 0, kG = 0;
-    private FeedforwardType feedforwardType = FeedforwardType.SIMPLE;
+    private FeedforwardType feedforwardType = FeedforwardType.NONE;
 
     // we wind up overwriting wpilib's default tolerance, which is 0.05, so set the same default
     // here to keep the same functionality
@@ -165,6 +170,11 @@ public class PIDFFGains {
 
     public PIDFFGainsBuilder elevatorFF() {
       this.feedforwardType = FeedforwardType.ELEVAOTR;
+      return this;
+    }
+
+    public PIDFFGainsBuilder simpleFF() {
+      this.feedforwardType = FeedforwardType.SIMPLE;
       return this;
     }
 
