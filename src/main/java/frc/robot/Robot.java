@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -20,6 +18,7 @@ import frc.robot.subsystems.Intake.IntakeIOSparkMAXPWM;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Pivot.PivotIOFalcon;
 import frc.robot.subsystems.Pivot.PivotSubsystem;
+import frc.robot.utilities.LEDController;
 import frc.robot.utilities.MotionHandler.MotionMode;
 import java.io.File;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -33,6 +32,7 @@ public class Robot extends LoggedRobot {
   public static ArmSubsystem arm;
   public static PivotSubsystem pivot;
   public static IntakeSubsystem intake;
+  public static LEDController leds;
 
   public static MotionMode motionMode = MotionMode.LOCKDOWN;
 
@@ -54,22 +54,6 @@ public class Robot extends LoggedRobot {
     createSwerveCommands();
 
     createOperatorCommands();
-
-    LEDStripInit();
-  }
-
-  public void LEDStripInit() {
-    AddressableLED m_led = new AddressableLED(9);
-    AddressableLEDBuffer m_ledBuffer = new AddressableLEDBuffer(60);
-    m_led.setLength(m_ledBuffer.getLength());
-    // Set the data
-    m_led.setData(m_ledBuffer);
-    m_led.start();
-    // throw some pretty lights on there
-    for (var i = 0; i < m_ledBuffer.getLength(); i++) {
-      // Sets the specified LED to the HSV values for our Red
-      m_ledBuffer.setHSV(i, 0, 100, 94);
-    }
   }
 
   private void initializeLogging() {
@@ -95,6 +79,8 @@ public class Robot extends LoggedRobot {
     arm = new ArmSubsystem(new ArmIOSparkMAX());
     pivot = new PivotSubsystem(new PivotIOFalcon());
     intake = new IntakeSubsystem(new IntakeIOSparkMAXPWM());
+
+    leds = new LEDController();
   }
 
   private void createSwerveCommands() {
@@ -176,6 +162,32 @@ public class Robot extends LoggedRobot {
     operator
         .rightBumper()
         .onFalse(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE));
+
+    // I am sorry
+    operator
+        .leftTrigger(0.5)
+        .and(operator.rightTrigger(0.5).negate())
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  Robot.leds.setMode(LEDController.LEDMode.CUBE);
+                }));
+    operator
+        .rightTrigger(0.5)
+        .and(operator.rightTrigger(0.5).negate())
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  Robot.leds.setMode(LEDController.LEDMode.CONE);
+                }));
+    operator
+        .leftTrigger(0.5)
+        .and(operator.rightTrigger(0.5))
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  Robot.leds.setMode(LEDController.LEDMode.DEOCRATIVE);
+                }));
   }
 
   @Override
@@ -188,7 +200,9 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    leds.setMode(LEDController.LEDMode.ALLIANCE);
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -200,6 +214,7 @@ public class Robot extends LoggedRobot {
   public void autonomousInit() {
     motionMode = MotionMode.TRAJECTORY;
     autoCommand = autoChooser.get();
+    leds.setMode(LEDController.LEDMode.DEOCRATIVE);
 
     if (autoCommand != null) {
       autoCommand.schedule();
@@ -218,6 +233,7 @@ public class Robot extends LoggedRobot {
       autoCommand.cancel();
     }
     motionMode = MotionMode.FULL_DRIVE;
+    leds.setMode(LEDController.LEDMode.DEOCRATIVE);
   }
 
   @Override
