@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.SetSuperstructure;
 import frc.robot.subsystems.Arm.ArmIOSparkMAX;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Chassis.ChassisIOMXP;
@@ -124,12 +125,7 @@ public class Robot extends LoggedRobot {
   }
 
   private void createOperatorCommands() {
-    operator.a().onTrue(PivotSubsystem.Commands.setPosition(90));
-    operator.b().onTrue(PivotSubsystem.Commands.setPosition(45));
-    operator.x().onTrue(ArmSubsystem.Commands.setHeight(5));
-    operator.y().onTrue(ArmSubsystem.Commands.setHeight(25));
-
-    // operator.x().onTrue(new SetSuperstructure(Constants.Superstructures.HOME_POSITION));
+    operator.x().onTrue(new SetSuperstructure(Constants.Superstructures.HOME_POSITION));
 
     operator
         .leftBumper()
@@ -218,6 +214,9 @@ public class Robot extends LoggedRobot {
     }
     motionMode = MotionMode.FULL_DRIVE;
     leds.setMode(LEDController.LEDMode.DEOCRATIVE);
+
+    Robot.arm.dontMove();
+    Robot.pivot.dontMove();
   }
 
   @Override

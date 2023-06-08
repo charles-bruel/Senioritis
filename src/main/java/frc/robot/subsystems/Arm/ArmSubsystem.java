@@ -39,6 +39,10 @@ public class ArmSubsystem extends SubsystemBase {
     return Math.abs(targetHeight - inputs.motorEncoderHeight) < ArmConstants.EPSILON;
   }
 
+  public void dontMove() {
+    targetHeight = inputs.absoluteEncoderHeight;
+  }
+
   @Override
   public void periodic() {
     double velocity = (inputs.absoluteEncoderHeight - lastPosition) / 0.02;

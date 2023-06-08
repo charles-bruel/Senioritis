@@ -35,10 +35,14 @@ public class PivotSubsystem extends SubsystemBase {
     return Math.abs(targetAngle - inputs.absoluteEncoderAngle) < PivotConstants.EPSILON;
   }
 
+  public void dontMove() {
+    targetAngle = inputs.absoluteEncoderAngle;
+  }
+
   public void setTargetAngle(double newAngle) {
-    // if (newAngle < PivotConstants.MIN_ANGLE || newAngle > PivotConstants.MAX_ANGLE) {
-    //   return;
-    // }
+    if (newAngle < PivotConstants.MIN_ANGLE || newAngle > PivotConstants.MAX_ANGLE) {
+      return;
+    }
     targetAngle = newAngle;
   }
 
