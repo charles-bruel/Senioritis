@@ -125,6 +125,9 @@ public class Robot extends LoggedRobot {
   }
 
   private void createOperatorCommands() {
+    operator.a().onTrue(new SetSuperstructure(Constants.Superstructures.CONE_MID));
+    operator.b().onTrue(new SetSuperstructure(Constants.Superstructures.CUBE_HIGH));
+    operator.y().onTrue(new SetSuperstructure(Constants.Superstructures.GROUND_INTAKE));
     operator.x().onTrue(new SetSuperstructure(Constants.Superstructures.HOME_POSITION));
 
     operator

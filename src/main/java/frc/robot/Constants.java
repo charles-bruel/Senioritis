@@ -238,11 +238,9 @@ public final class Constants {
   @UtilityClass
   public static class Superstructures {
     public static final SuperstructureConfig GROUND_INTAKE =
-        SuperstructureConfig.builder().pivotPosition(0).armHeight(0).build();
+        SuperstructureConfig.builder().pivotPosition(0).armHeight(5).build();
     public static final SuperstructureConfig HOME_POSITION =
-        SuperstructureConfig.builder().pivotPosition(90).armHeight(0).build();
-    public static final SuperstructureConfig ARM_TEST =
-        SuperstructureConfig.builder().pivotPosition(45).armHeight(20).build();
+        SuperstructureConfig.builder().pivotPosition(90).armHeight(5).build();
 
     // placeholders for now
     public static final SuperstructureConfig CUBE_LOW =
@@ -250,11 +248,11 @@ public final class Constants {
     public static final SuperstructureConfig CUBE_MID =
         SuperstructureConfig.builder().pivotPosition(0).armHeight(0).build();
     public static final SuperstructureConfig CUBE_HIGH =
-        SuperstructureConfig.builder().pivotPosition(0).armHeight(0).build();
+        SuperstructureConfig.builder().pivotPosition(50).armHeight(25).build();
     public static final SuperstructureConfig CONE_LOW =
         SuperstructureConfig.builder().pivotPosition(0).armHeight(0).build();
     public static final SuperstructureConfig CONE_MID =
-        SuperstructureConfig.builder().pivotPosition(0).armHeight(0).build();
+        SuperstructureConfig.builder().pivotPosition(45).armHeight(15).build();
     public static final SuperstructureConfig CONE_HIGH =
         SuperstructureConfig.builder().pivotPosition(0).armHeight(0).build();
   }
