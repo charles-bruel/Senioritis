@@ -24,7 +24,7 @@ public class PivotSubsystem extends SubsystemBase {
 
   public PivotSubsystem(PivotIO pivotIO) {
     io = pivotIO;
-    controller = PivotConstants.GAINS.createProfiledPIDController(new Constraints(70, 50));
+    controller = PivotConstants.GAINS.createProfiledPIDController(new Constraints(300, 300));
     feedForward = PivotConstants.GAINS.createArmDegFeedforward();
     inputs = new PivotInputsAutoLogged();
     io.updateInputs(inputs);

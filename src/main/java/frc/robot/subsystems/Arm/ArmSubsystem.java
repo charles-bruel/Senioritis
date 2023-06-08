@@ -40,9 +40,10 @@ public class ArmSubsystem extends SubsystemBase {
     io.updateInputs(inputs);
     double output = controller.calculate(inputs.absoluteEncoderHeight, targetHeight);
     output = Robot.operator.getLeftY() * 12;
+    output = MathUtil.clamp(output, -12, 12);
+
     io.setVoltage(output);
 
-    output = MathUtil.clamp(output, -12, 12);
     Logger.getInstance().recordOutput("Arm/Target Height", targetHeight);
     Logger.getInstance().recordOutput("Arm/Output", output);
 
