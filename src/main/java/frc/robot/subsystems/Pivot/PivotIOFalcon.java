@@ -33,7 +33,7 @@ public class PivotIOFalcon implements PivotIO {
 
   @Override
   public void updateInputs(PivotInputs inputs) {
-    inputs.absoluteEncoderAngle = absoluteEncoder.getAbsolutePosition() * -360 + 109;
+    inputs.absoluteEncoderAngle = absoluteEncoder.getAbsolutePosition() * -360 + PivotConstants.ENCODER_OFFSET;
     inputs.motorEncoderAngle =
         pivotMotorRight.getSelectedSensorPosition(0)
             * (360.0 / 2048.0)
