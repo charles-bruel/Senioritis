@@ -56,7 +56,7 @@ public final class Constants {
 
     // LED stuff (very important)
     public static final int LED_PORT = 9;
-    public static final int LED_COUNT = 60;
+    public static final int LED_COUNT = 20;
   }
 
   @UtilityClass
@@ -64,21 +64,17 @@ public final class Constants {
     public static final double GEAR_RATIO = 17.1875;
     public static final int CURRENT_LIMIT = 30;
     public static final double MAX_HEIGHT = 32;
-    public static final double MIN_HEIGHT = 0;
+    public static final double MIN_HEIGHT = 1;
     public static final double ENCODER_OFFSET = 0;
     public static final double DIST_PER_ROTATION = -10.5;
-    public static final double RETRACTED_POSITION = 0;
-    public static final double EPSILON = .5;
+    public static final double RETRACTED_POSITION = 1;
+    public static final double EPSILON = 2;
 
+    public static final double MAX_PID_OUTPUT_VOLTS = 8;
     public static final double MAX_OUTPUT_VOLTS = 12;
 
     public static final PIDFFGains GAINS =
-        PIDFFGains.builder("ArmController")
-            .kP(0.1)
-            .kD(DOUBLE_PLACEHOLDER)
-            .kG(6)
-            .elevatorFF()
-            .build();
+        PIDFFGains.builder("ArmController").kP(3).kD(0.00).kI(0.00).kS(1.00).kG(4.00).build();
   }
 
   @UtilityClass
@@ -87,18 +83,18 @@ public final class Constants {
     public static final SupplyCurrentLimitConfiguration CURRENT_LIMIT =
         new SupplyCurrentLimitConfiguration(true, 20, 50, .25);
     public static final double MAX_ANGLE = 90;
-    public static final double MIN_ANGLE = DOUBLE_PLACEHOLDER;
+    public static final double MIN_ANGLE = 10;
     public static final double ENCODER_OFFSET = 109;
-    public static final double EPSILON = 3;
+    public static final double EPSILON = 5;
 
-    public static final double MAX_OUTPUT_VOLTS = 12;
+    public static final double MAX_OUTPUT_VOLTS = 4;
 
     public static final PIDFFGains GAINS =
         PIDFFGains.builder("PivotController")
             .kP(0.15)
             .kD(0.01)
-            .kG(0.6)
-            .kS(0.6)
+            .kG(0.20)
+            .kS(0.67)
             .armDegFF()
             .tolerance(0.5)
             .build();
@@ -108,7 +104,7 @@ public final class Constants {
   public static class IntakeConstants {
     public static final double IDLE_VOLTAGE = 1;
     public static final double INTAKE_VOLTAGE = 6;
-    public static final double OUTTAKE_VOLTAGE = -4.8;
+    public static final double OUTTAKE_VOLTAGE = -12;
   }
 
   @UtilityClass

@@ -17,9 +17,9 @@ public class ArmFeedforwardDeg extends ArmFeedforward {
   @Override
   public double calculate(
       double positionDegrees, double velocityDegreesPerSec, double accelDegreesPerSecSquared) {
-    return ks * Math.signum(velocityDegreesPerSec * DEG2RADD)
+    return ks * Math.signum(velocityDegreesPerSec)
         + kg * Math.cos(positionDegrees * DEG2RADD)
-        + kv * velocityDegreesPerSec * DEG2RADD
-        + ka * accelDegreesPerSecSquared * DEG2RADD;
+        + kv * velocityDegreesPerSec
+        + ka * accelDegreesPerSecSquared;
   }
 }

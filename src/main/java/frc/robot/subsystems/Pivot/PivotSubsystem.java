@@ -54,8 +54,12 @@ public class PivotSubsystem extends SubsystemBase {
   public void periodic() {
     double velocity = (inputs.absoluteEncoderAngle - lastPosition) / 0.02;
     io.updateInputs(inputs);
-    double output = controller.calculate(inputs.absoluteEncoderAngle, targetAngle);
-    output += feedforward.calculate(inputs.absoluteEncoderAngle, velocity);
+    double pidValue = controller.calculate(inputs.absoluteEncoderAngle, targetAngle);
+    // Bad hack since we dont use kv
+    double feedforwardValue =
+        feedforward.calculate(
+            inputs.absoluteEncoderAngle, targetAngle - inputs.absoluteEncoderAngle, 0);
+    double output = pidValue + feedforwardValue;
 
     // Code to create a good way to create setpoints
     double v = Robot.operator.getLeftY();
@@ -71,6 +75,9 @@ public class PivotSubsystem extends SubsystemBase {
 
     Logger.getInstance().recordOutput("Pivot/Target Angle", targetAngle);
     Logger.getInstance().recordOutput("Pivot/Output", output);
+    Logger.getInstance().recordOutput("Pivot/PIDOutput", pidValue);
+    Logger.getInstance().recordOutput("Pivot/FFOutput", feedforwardValue);
+    Logger.getInstance().recordOutput("Pivot/Velocity", velocity);
 
     Logger.getInstance().processInputs("Pivot", inputs);
     lastPosition = inputs.absoluteEncoderAngle;
