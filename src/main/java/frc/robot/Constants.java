@@ -74,7 +74,14 @@ public final class Constants {
     public static final double MAX_OUTPUT_VOLTS = 12;
 
     public static final PIDFFGains GAINS =
-        PIDFFGains.builder("ArmController").kP(3).kD(0.00).kI(0.00).kS(1.00).kG(4.00).build();
+        PIDFFGains.builder("ArmController")
+            .kP(3)
+            .kD(0.00)
+            .kI(0.00)
+            .kS(1.00)
+            .kG(4.00)
+            .tolerance(0.5)
+            .build();
   }
 
   @UtilityClass
