@@ -129,6 +129,8 @@ public class Robot extends LoggedRobot {
     operator.b().onTrue(new SetSuperstructure(Constants.Superstructures.CUBE_HIGH));
     operator.y().onTrue(new SetSuperstructure(Constants.Superstructures.GROUND_INTAKE));
     operator.x().onTrue(new SetSuperstructure(Constants.Superstructures.HOME_POSITION));
+    operator.povUp().onTrue(new SetSuperstructure(Constants.Superstructures.CUBE_MID));
+    operator.povDown().onTrue(new SetSuperstructure(Constants.Superstructures.SUBSTATION));
 
     operator
         .leftBumper()

@@ -82,6 +82,9 @@ public class PivotSubsystem extends SubsystemBase {
     Logger.getInstance().recordOutput("Pivot/PIDOutput", pidValue);
     Logger.getInstance().recordOutput("Pivot/FFOutput", feedforwardValue);
     Logger.getInstance().recordOutput("Pivot/Velocity", velocity);
+    Logger.getInstance()
+        .recordOutput(
+            "Pivot/Command", getCurrentCommand() != null ? getCurrentCommand().getName() : "null");
 
     Logger.getInstance().processInputs("Pivot", inputs);
     lastPosition = inputs.absoluteEncoderAngle;
