@@ -251,13 +251,17 @@ public final class Constants {
         SuperstructureConfig.builder().pivotPosition(90).armHeight(5).build();
     public static final SuperstructureConfig SINGLE_SUBSTATION =
         SuperstructureConfig.builder().pivotPosition(40).armHeight(5).build();
+    // Untested
+    public static final SuperstructureConfig DOUBLE_SUBSTATION =
+        SuperstructureConfig.builder().pivotPosition(40).armHeight(5).build();
+
     public static final SuperstructureConfig CUBE_MID =
         SuperstructureConfig.builder().pivotPosition(45).armHeight(5).build();
     public static final SuperstructureConfig CUBE_HIGH =
         SuperstructureConfig.builder().pivotPosition(50).armHeight(25).build();
     public static final SuperstructureConfig CONE_MID =
         SuperstructureConfig.builder().pivotPosition(50).armHeight(10).build();
-    //Untested
+    // Untested
     public static final SuperstructureConfig CONE_HIGH =
         SuperstructureConfig.builder().pivotPosition(55).armHeight(30).build();
   }
