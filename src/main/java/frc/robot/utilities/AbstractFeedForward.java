@@ -7,6 +7,12 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 public abstract class AbstractFeedForward {
   public abstract double calculate(double position, double velocity);
 
+  public static class AbstractNull extends AbstractFeedForward {
+    public double calculate(double position, double velocity) {
+      return 0;
+    }
+  }
+
   public static class AbstractSimpleFeedForward extends AbstractFeedForward {
     private final SimpleMotorFeedforward ff;
 
