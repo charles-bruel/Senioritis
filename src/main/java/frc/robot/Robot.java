@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -22,6 +23,7 @@ import frc.robot.subsystems.Intake.IntakeIOSparkMAXPWM;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Pivot.PivotIOFalcon;
 import frc.robot.subsystems.Pivot.PivotSubsystem;
+import frc.robot.utilities.HeadingController;
 import frc.robot.utilities.LEDController;
 import frc.robot.utilities.MotionHandler.MotionMode;
 import java.io.File;
@@ -118,41 +120,41 @@ public class Robot extends LoggedRobot {
     driver.x().onTrue(new InstantCommand(() -> motionMode = MotionMode.LOCKDOWN));
     driver.back().onTrue(new InstantCommand(() -> swerveDrive.zeroGyro()));
 
-    // driver
-    //     .povUp()
-    //     .onTrue(
-    //         new InstantCommand(
-    //             () -> {
-    //               motionMode = MotionMode.HEADING_CONTROLLER;
-    //               HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(0));
-    //             }));
+    driver
+        .povUp()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  motionMode = MotionMode.HEADING_CONTROLLER;
+                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(0));
+                }));
 
-    // driver
-    //     .povLeft()
-    //     .onTrue(
-    //         new InstantCommand(
-    //             () -> {
-    //               motionMode = MotionMode.HEADING_CONTROLLER;
-    //               HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(90));
-    //             }));
+    driver
+        .povLeft()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  motionMode = MotionMode.HEADING_CONTROLLER;
+                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(90));
+                }));
 
-    // driver
-    //     .povDown()
-    //     .onTrue(
-    //         new InstantCommand(
-    //             () -> {
-    //               motionMode = MotionMode.HEADING_CONTROLLER;
-    //               HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(180));
-    //             }));
+    driver
+        .povDown()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  motionMode = MotionMode.HEADING_CONTROLLER;
+                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(180));
+                }));
 
-    // driver
-    //     .povRight()
-    //     .onTrue(
-    //         new InstantCommand(
-    //             () -> {
-    //               motionMode = MotionMode.HEADING_CONTROLLER;
-    //               HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
-    //             }));
+    driver
+        .povRight()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  motionMode = MotionMode.HEADING_CONTROLLER;
+                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
+                }));
   }
 
   private void createOperatorCommands() {
