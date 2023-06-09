@@ -9,6 +9,7 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Robot;
+import frc.robot.commands.DumbDriveTrajectory;
 import frc.robot.subsystems.Chassis.ChassisSubsystem;
 import org.littletonrobotics.junction.Logger;
 
@@ -83,12 +84,9 @@ public class MotionHandler {
   }
 
   public static SwerveModuleState[] driveTrajectoryDumb() {
-    double xSpeed =
-        MathUtil.applyDeadband(Robot.driver.getLeftY(), DriveConstants.K_JOYSTICK_TURN_DEADZONE);
-    double ySpeed =
-        MathUtil.applyDeadband(Robot.driver.getLeftX(), DriveConstants.K_JOYSTICK_TURN_DEADZONE);
-    double rSpeed =
-        MathUtil.applyDeadband(Robot.driver.getRightX(), DriveConstants.K_JOYSTICK_TURN_DEADZONE);
+    double xSpeed = DumbDriveTrajectory.getXSpeed();
+    double ySpeed = DumbDriveTrajectory.getYSpeed();
+    double rSpeed = DumbDriveTrajectory.getRSpeed();
 
     xSpeed *= DriveConstants.MAX_SWERVE_VEL * ChassisSubsystem.allianceFlipper;
     ySpeed *= DriveConstants.MAX_SWERVE_VEL * ChassisSubsystem.allianceFlipper;
