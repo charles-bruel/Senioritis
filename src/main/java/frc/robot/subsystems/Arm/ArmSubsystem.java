@@ -52,10 +52,9 @@ public class ArmSubsystem extends SubsystemBase {
     pidValue =
         MathUtil.clamp(
             pidValue, -ArmConstants.MAX_PID_OUTPUT_VOLTS, ArmConstants.MAX_PID_OUTPUT_VOLTS);
-    // Bad hack since we dont use kv
     double feedforwardValue =
         feedforward.calculate(
-            Robot.pivot.getCurrentAngle(), targetHeight - inputs.absoluteEncoderHeight);
+            Robot.pivot.getCurrentAngle(), targetHeight - inputs.absoluteEncoderHeight, velocity);
     double output = pidValue + feedforwardValue;
 
     // tolerance hack

@@ -59,10 +59,9 @@ public class PivotSubsystem extends SubsystemBase {
     double velocity = (inputs.absoluteEncoderAngle - lastPosition) / 0.02;
     io.updateInputs(inputs);
     double pidValue = controller.calculate(inputs.absoluteEncoderAngle, targetAngle);
-    // Bad hack since we dont use kv
     double feedforwardValue =
         feedforward.calculate(
-            inputs.absoluteEncoderAngle, targetAngle - inputs.absoluteEncoderAngle, 0);
+            inputs.absoluteEncoderAngle, targetAngle - inputs.absoluteEncoderAngle, velocity);
     double output = pidValue + feedforwardValue;
 
     // Code to create a good way to create setpoints

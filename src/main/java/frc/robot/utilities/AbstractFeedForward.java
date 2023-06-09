@@ -5,10 +5,10 @@ import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
 public abstract class AbstractFeedForward {
-  public abstract double calculate(double position, double velocity);
+  public abstract double calculate(double position, double positionError, double velocity);
 
   public static class AbstractNull extends AbstractFeedForward {
-    public double calculate(double position, double velocity) {
+    public double calculate(double position, double positionError, double velocity) {
       return 0;
     }
   }
@@ -21,7 +21,7 @@ public abstract class AbstractFeedForward {
     }
 
     @Override
-    public double calculate(double position, double velocity) {
+    public double calculate(double position, double positionError, double velocity) {
       return ff.calculate(velocity);
     }
   }
@@ -34,7 +34,7 @@ public abstract class AbstractFeedForward {
     }
 
     @Override
-    public double calculate(double position, double velocity) {
+    public double calculate(double position, double positionError, double velocity) {
       return ff.calculate(position, velocity);
     }
   }
@@ -47,8 +47,8 @@ public abstract class AbstractFeedForward {
     }
 
     @Override
-    public double calculate(double position, double velocity) {
-      return ff.calculate(position, velocity);
+    public double calculate(double position, double positionError, double velocity) {
+      return ff.calculate(position, positionError, velocity);
     }
   }
 
@@ -60,7 +60,7 @@ public abstract class AbstractFeedForward {
     }
 
     @Override
-    public double calculate(double position, double velocity) {
+    public double calculate(double position, double positionError, double velocity) {
       return ff.calculate(velocity);
     }
   }

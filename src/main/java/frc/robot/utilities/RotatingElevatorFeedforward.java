@@ -14,8 +14,8 @@ public class RotatingElevatorFeedforward {
     this.kv = kv;
   }
 
-  public double calculate(double elevatorAngleDegrees, double velocity) {
-    return ks * Math.signum(velocity)
+  public double calculate(double elevatorAngleDegrees, double positionError, double velocity) {
+    return ks * Math.signum(positionError)
         + kg * Math.sin(elevatorAngleDegrees * DEG2RADD)
         + kv * velocity;
   }
