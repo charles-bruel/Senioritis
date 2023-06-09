@@ -257,7 +257,7 @@ public final class Constants {
         SuperstructureConfig.builder().pivotPosition(50).armHeight(25).build();
     public static final SuperstructureConfig CONE_MID =
         SuperstructureConfig.builder().pivotPosition(50).armHeight(10).build();
-    //Untested
+    // Untested
     public static final SuperstructureConfig CONE_HIGH =
         SuperstructureConfig.builder().pivotPosition(55).armHeight(30).build();
   }
