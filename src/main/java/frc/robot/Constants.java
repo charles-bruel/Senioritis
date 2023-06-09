@@ -244,25 +244,21 @@ public final class Constants {
 
   @UtilityClass
   public static class Superstructures {
-    public static final SuperstructureConfig GROUND_INTAKE =
+    // Handles ground intake and hybrid nodes
+    public static final SuperstructureConfig GROUND =
         SuperstructureConfig.builder().pivotPosition(10).armHeight(5).build();
     public static final SuperstructureConfig HOME_POSITION =
         SuperstructureConfig.builder().pivotPosition(90).armHeight(5).build();
-    public static final SuperstructureConfig SUBSTATION =
+    public static final SuperstructureConfig SINGLE_SUBSTATION =
         SuperstructureConfig.builder().pivotPosition(40).armHeight(5).build();
-
-    // placeholders for now
-    public static final SuperstructureConfig CUBE_LOW =
-        SuperstructureConfig.builder().pivotPosition(0).armHeight(0).build();
     public static final SuperstructureConfig CUBE_MID =
         SuperstructureConfig.builder().pivotPosition(45).armHeight(5).build();
     public static final SuperstructureConfig CUBE_HIGH =
         SuperstructureConfig.builder().pivotPosition(50).armHeight(25).build();
-    public static final SuperstructureConfig CONE_LOW =
-        SuperstructureConfig.builder().pivotPosition(0).armHeight(0).build();
     public static final SuperstructureConfig CONE_MID =
         SuperstructureConfig.builder().pivotPosition(50).armHeight(10).build();
+    //Untested
     public static final SuperstructureConfig CONE_HIGH =
-        SuperstructureConfig.builder().pivotPosition(0).armHeight(0).build();
+        SuperstructureConfig.builder().pivotPosition(55).armHeight(30).build();
   }
 }

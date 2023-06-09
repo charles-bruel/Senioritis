@@ -158,12 +158,13 @@ public class Robot extends LoggedRobot {
   }
 
   private void createOperatorCommands() {
-    operator.a().onTrue(new SetSuperstructure(Superstructures.CONE_MID));
+    operator.a().onTrue(new SetSuperstructure(Superstructures.CUBE_MID));
     operator.b().onTrue(new SetSuperstructure(Superstructures.CUBE_HIGH));
-    operator.y().onTrue(new SetSuperstructure(Superstructures.GROUND_INTAKE));
+    operator.y().onTrue(new SetSuperstructure(Superstructures.GROUND));
     operator.x().onTrue(new SetSuperstructure(Superstructures.HOME_POSITION));
-    operator.povUp().onTrue(new SetSuperstructure(Superstructures.CUBE_MID));
-    operator.povDown().onTrue(new SetSuperstructure(Superstructures.SUBSTATION));
+    operator.povUp().onTrue(new SetSuperstructure(Superstructures.CONE_MID));
+    operator.povRight().onTrue(new SetSuperstructure(Superstructures.CONE_HIGH));
+    operator.povDown().onTrue(new SetSuperstructure(Superstructures.SINGLE_SUBSTATION));
 
     operator
         .leftBumper()
