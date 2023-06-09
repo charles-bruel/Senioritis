@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.*;
 import frc.robot.commands.Delay;
 import frc.robot.commands.DumbDriveTrajectory;
 import frc.robot.commands.SetSuperstructure;
@@ -63,36 +64,36 @@ public class Robot extends LoggedRobot {
     autoChooser.addDefaultOption(
         "HighCube",
         new SequentialCommandGroup(
-            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.INTAKE_VOLTAGE),
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.INTAKE_VOLTAGE),
             new Delay(0.25),
-            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE),
-            new SetSuperstructure(Constants.Superstructures.CUBE_HIGH),
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
+            new SetSuperstructure(Superstructures.CUBE_HIGH),
             new Delay(0.5),
-            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.OUTTAKE_VOLTAGE),
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.OUTTAKE_VOLTAGE),
             new Delay(0.25),
-            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE),
-            new SetSuperstructure(Constants.Superstructures.HOME_POSITION)));
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
+            new SetSuperstructure(Superstructures.HOME_POSITION)));
     autoChooser.addOption(
         "HighCubeMobility",
         new SequentialCommandGroup(
-            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.INTAKE_VOLTAGE),
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.INTAKE_VOLTAGE),
             new Delay(0.25),
-            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE),
-            new SetSuperstructure(Constants.Superstructures.CUBE_HIGH),
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
+            new SetSuperstructure(Superstructures.CUBE_HIGH),
             new Delay(0.5),
-            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.OUTTAKE_VOLTAGE),
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.OUTTAKE_VOLTAGE),
             new Delay(0.25),
-            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE),
-            new SetSuperstructure(Constants.Superstructures.HOME_POSITION),
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
+            new SetSuperstructure(Superstructures.HOME_POSITION),
             new DumbDriveTrajectory(0, -1, 0, 1)));
   }
 
   private void initializeLogging() {
     Logger.getInstance().addDataReceiver(new NT4Publisher());
     if (isReal()) {
-      File sda1 = new File(Constants.Logging.sda1Dir);
+      File sda1 = new File(Logging.sda1Dir);
       if (sda1.exists() && sda1.isDirectory()) {
-        Logger.getInstance().addDataReceiver(new WPILOGWriter(Constants.Logging.sda1Dir));
+        Logger.getInstance().addDataReceiver(new WPILOGWriter(Logging.sda1Dir));
       }
     }
     Logger.getInstance().start();
@@ -102,10 +103,10 @@ public class Robot extends LoggedRobot {
     swerveDrive =
         new ChassisSubsystem(
             new ChassisIOMXP(),
-            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_LEFT),
-            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_RIGHT),
-            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
-            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
+            new ModuleIOSparkMAX(DriveConstants.FRONT_LEFT),
+            new ModuleIOSparkMAX(DriveConstants.FRONT_RIGHT),
+            new ModuleIOSparkMAX(DriveConstants.BACK_LEFT),
+            new ModuleIOSparkMAX(DriveConstants.BACK_RIGHT));
 
     arm = new ArmSubsystem(new ArmIOSparkMAX());
     pivot = new PivotSubsystem(new PivotIOFalcon());
@@ -155,28 +156,28 @@ public class Robot extends LoggedRobot {
   }
 
   private void createOperatorCommands() {
-    operator.a().onTrue(new SetSuperstructure(Constants.Superstructures.CONE_MID));
-    operator.b().onTrue(new SetSuperstructure(Constants.Superstructures.CUBE_HIGH));
-    operator.y().onTrue(new SetSuperstructure(Constants.Superstructures.GROUND_INTAKE));
-    operator.x().onTrue(new SetSuperstructure(Constants.Superstructures.HOME_POSITION));
-    operator.povUp().onTrue(new SetSuperstructure(Constants.Superstructures.CUBE_MID));
-    operator.povDown().onTrue(new SetSuperstructure(Constants.Superstructures.SUBSTATION));
+    operator.a().onTrue(new SetSuperstructure(Superstructures.CONE_MID));
+    operator.b().onTrue(new SetSuperstructure(Superstructures.CUBE_HIGH));
+    operator.y().onTrue(new SetSuperstructure(Superstructures.GROUND_INTAKE));
+    operator.x().onTrue(new SetSuperstructure(Superstructures.HOME_POSITION));
+    operator.povUp().onTrue(new SetSuperstructure(Superstructures.CUBE_MID));
+    operator.povDown().onTrue(new SetSuperstructure(Superstructures.SUBSTATION));
 
     operator
         .leftBumper()
-        .onTrue(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.INTAKE_VOLTAGE));
+        .onTrue(IntakeSubsystem.Commands.setVoltage(IntakeConstants.INTAKE_VOLTAGE));
 
     operator
         .leftBumper()
-        .onFalse(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE));
+        .onFalse(IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE));
 
     operator
         .rightBumper()
-        .onTrue(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.OUTTAKE_VOLTAGE));
+        .onTrue(IntakeSubsystem.Commands.setVoltage(IntakeConstants.OUTTAKE_VOLTAGE));
 
     operator
         .rightBumper()
-        .onFalse(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE));
+        .onFalse(IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE));
 
     // I am sorry
     operator
