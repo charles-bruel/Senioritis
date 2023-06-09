@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.Delay;
+import frc.robot.commands.DumbDriveTrajectory;
 import frc.robot.commands.SetSuperstructure;
 import frc.robot.subsystems.Arm.ArmIOSparkMAX;
 import frc.robot.subsystems.Arm.ArmSubsystem;
@@ -50,11 +52,39 @@ public class Robot extends LoggedRobot {
 
     initializeSubsystems();
 
-    autoChooser.addDefaultOption("Blank", new SequentialCommandGroup());
+    createAutoCommands();
 
     createSwerveCommands();
 
     createOperatorCommands();
+  }
+
+  private void createAutoCommands() {
+    autoChooser.addDefaultOption(
+        "HighCube",
+        new SequentialCommandGroup(
+            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.INTAKE_VOLTAGE),
+            new Delay(0.25),
+            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE),
+            new SetSuperstructure(Constants.Superstructures.CUBE_HIGH),
+            new Delay(0.5),
+            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.OUTTAKE_VOLTAGE),
+            new Delay(0.25),
+            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE),
+            new SetSuperstructure(Constants.Superstructures.HOME_POSITION)));
+    autoChooser.addOption(
+        "HighCubeMobility",
+        new SequentialCommandGroup(
+            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.INTAKE_VOLTAGE),
+            new Delay(0.25),
+            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE),
+            new SetSuperstructure(Constants.Superstructures.CUBE_HIGH),
+            new Delay(0.5),
+            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.OUTTAKE_VOLTAGE),
+            new Delay(0.25),
+            IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE),
+            new SetSuperstructure(Constants.Superstructures.HOME_POSITION),
+            new DumbDriveTrajectory(0, 1, 0, 1)));
   }
 
   private void initializeLogging() {
@@ -197,7 +227,6 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void autonomousInit() {
-    motionMode = MotionMode.TRAJECTORY;
     autoCommand = autoChooser.get();
     leds.setMode(LEDController.LEDMode.DEOCRATIVE);
 
