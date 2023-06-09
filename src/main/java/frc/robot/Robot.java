@@ -84,7 +84,7 @@ public class Robot extends LoggedRobot {
             new Delay(0.25),
             IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE),
             new SetSuperstructure(Constants.Superstructures.HOME_POSITION),
-            new DumbDriveTrajectory(0, 1, 0, 1)));
+            new DumbDriveTrajectory(0, -1, 0, 1)));
   }
 
   private void initializeLogging() {

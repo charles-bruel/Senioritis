@@ -84,8 +84,11 @@ public class MotionHandler {
   }
 
   public static SwerveModuleState[] driveTrajectoryDumb() {
-    double xSpeed = DumbDriveTrajectory.getXSpeed();
-    double ySpeed = DumbDriveTrajectory.getYSpeed();
+    // X and Y are purposefully swapped because in the actual
+    // controls, the Y axis of the stick controls the "xSpeed"
+    // and vice-versa
+    double xSpeed = DumbDriveTrajectory.getYSpeed();
+    double ySpeed = DumbDriveTrajectory.getXSpeed();
     double rSpeed = DumbDriveTrajectory.getRSpeed();
 
     xSpeed *= DriveConstants.MAX_SWERVE_VEL * ChassisSubsystem.allianceFlipper;
