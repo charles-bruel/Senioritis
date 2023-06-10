@@ -4,11 +4,15 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants.*;
+import frc.robot.commands.Delay;
+import frc.robot.commands.DumbDriveTrajectory;
 import frc.robot.commands.SetSuperstructure;
 import frc.robot.subsystems.Arm.ArmIOSparkMAX;
 import frc.robot.subsystems.Arm.ArmSubsystem;
@@ -19,6 +23,7 @@ import frc.robot.subsystems.Intake.IntakeIOSparkMAXPWM;
 import frc.robot.subsystems.Intake.IntakeSubsystem;
 import frc.robot.subsystems.Pivot.PivotIOFalcon;
 import frc.robot.subsystems.Pivot.PivotSubsystem;
+import frc.robot.utilities.HeadingController;
 import frc.robot.utilities.LEDController;
 import frc.robot.utilities.MotionHandler.MotionMode;
 import java.io.File;
@@ -50,19 +55,47 @@ public class Robot extends LoggedRobot {
 
     initializeSubsystems();
 
-    autoChooser.addDefaultOption("Blank", new SequentialCommandGroup());
+    createAutoCommands();
 
     createSwerveCommands();
 
     createOperatorCommands();
   }
 
+  private void createAutoCommands() {
+    autoChooser.addDefaultOption(
+        "HighCube",
+        new SequentialCommandGroup(
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.INTAKE_VOLTAGE),
+            new Delay(0.25),
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
+            new SetSuperstructure(Superstructures.CUBE_HIGH),
+            new Delay(0.5),
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.OUTTAKE_VOLTAGE),
+            new Delay(0.25),
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
+            new SetSuperstructure(Superstructures.HOME_POSITION)));
+    autoChooser.addOption(
+        "HighCubeMobility",
+        new SequentialCommandGroup(
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.INTAKE_VOLTAGE),
+            new Delay(0.25),
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
+            new SetSuperstructure(Superstructures.CUBE_HIGH),
+            new Delay(0.5),
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.OUTTAKE_VOLTAGE),
+            new Delay(0.25),
+            IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE),
+            new SetSuperstructure(Superstructures.HOME_POSITION),
+            new DumbDriveTrajectory(0, -1, 0, 1)));
+  }
+
   private void initializeLogging() {
     Logger.getInstance().addDataReceiver(new NT4Publisher());
     if (isReal()) {
-      File sda1 = new File(Constants.Logging.sda1Dir);
+      File sda1 = new File(Logging.sda1Dir);
       if (sda1.exists() && sda1.isDirectory()) {
-        Logger.getInstance().addDataReceiver(new WPILOGWriter(Constants.Logging.sda1Dir));
+        Logger.getInstance().addDataReceiver(new WPILOGWriter(Logging.sda1Dir));
       }
     }
     Logger.getInstance().start();
@@ -72,10 +105,10 @@ public class Robot extends LoggedRobot {
     swerveDrive =
         new ChassisSubsystem(
             new ChassisIOMXP(),
-            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_LEFT),
-            new ModuleIOSparkMAX(Constants.DriveConstants.FRONT_RIGHT),
-            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_LEFT),
-            new ModuleIOSparkMAX(Constants.DriveConstants.BACK_RIGHT));
+            new ModuleIOSparkMAX(DriveConstants.FRONT_LEFT),
+            new ModuleIOSparkMAX(DriveConstants.FRONT_RIGHT),
+            new ModuleIOSparkMAX(DriveConstants.BACK_LEFT),
+            new ModuleIOSparkMAX(DriveConstants.BACK_RIGHT));
 
     arm = new ArmSubsystem(new ArmIOSparkMAX());
     pivot = new PivotSubsystem(new PivotIOFalcon());
@@ -87,64 +120,68 @@ public class Robot extends LoggedRobot {
     driver.x().onTrue(new InstantCommand(() -> motionMode = MotionMode.LOCKDOWN));
     driver.back().onTrue(new InstantCommand(() -> swerveDrive.zeroGyro()));
 
-    // driver
-    //     .povUp()
-    //     .onTrue(
-    //         new InstantCommand(
-    //             () -> {
-    //               motionMode = MotionMode.HEADING_CONTROLLER;
-    //               HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(0));
-    //             }));
+    driver
+        .povUp()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  motionMode = MotionMode.HEADING_CONTROLLER;
+                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(0));
+                }));
 
-    // driver
-    //     .povLeft()
-    //     .onTrue(
-    //         new InstantCommand(
-    //             () -> {
-    //               motionMode = MotionMode.HEADING_CONTROLLER;
-    //               HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(90));
-    //             }));
+    driver
+        .povLeft()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  motionMode = MotionMode.HEADING_CONTROLLER;
+                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(90));
+                }));
 
-    // driver
-    //     .povDown()
-    //     .onTrue(
-    //         new InstantCommand(
-    //             () -> {
-    //               motionMode = MotionMode.HEADING_CONTROLLER;
-    //               HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(180));
-    //             }));
+    driver
+        .povDown()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  motionMode = MotionMode.HEADING_CONTROLLER;
+                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(180));
+                }));
 
-    // driver
-    //     .povRight()
-    //     .onTrue(
-    //         new InstantCommand(
-    //             () -> {
-    //               motionMode = MotionMode.HEADING_CONTROLLER;
-    //               HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
-    //             }));
+    driver
+        .povRight()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  motionMode = MotionMode.HEADING_CONTROLLER;
+                  HeadingController.getInstance().setSetpoint(Rotation2d.fromDegrees(270));
+                }));
   }
 
   private void createOperatorCommands() {
-    operator.a().onTrue(new SetSuperstructure(Constants.Superstructures.CONE_MID));
-    operator.b().onTrue(new SetSuperstructure(Constants.Superstructures.CUBE_HIGH));
-    operator.y().onTrue(new SetSuperstructure(Constants.Superstructures.GROUND_INTAKE));
-    operator.x().onTrue(new SetSuperstructure(Constants.Superstructures.HOME_POSITION));
+    operator.a().onTrue(new SetSuperstructure(Superstructures.CUBE_MID));
+    operator.b().onTrue(new SetSuperstructure(Superstructures.CUBE_HIGH));
+    operator.y().onTrue(new SetSuperstructure(Superstructures.GROUND));
+    operator.x().onTrue(new SetSuperstructure(Superstructures.HOME_POSITION));
+    operator.povUp().onTrue(new SetSuperstructure(Superstructures.CONE_MID));
+    operator.povRight().onTrue(new SetSuperstructure(Superstructures.CONE_HIGH));
+    operator.povDown().onTrue(new SetSuperstructure(Superstructures.SINGLE_SUBSTATION));
+    operator.povLeft().onTrue(new SetSuperstructure(Superstructures.DOUBLE_SUBSTATION));
 
     operator
         .leftBumper()
-        .onTrue(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.INTAKE_VOLTAGE));
+        .onTrue(IntakeSubsystem.Commands.setVoltage(IntakeConstants.INTAKE_VOLTAGE));
 
     operator
         .leftBumper()
-        .onFalse(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE));
+        .onFalse(IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE));
 
     operator
         .rightBumper()
-        .onTrue(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.OUTTAKE_VOLTAGE));
+        .onTrue(IntakeSubsystem.Commands.setVoltage(IntakeConstants.OUTTAKE_VOLTAGE));
 
     operator
         .rightBumper()
-        .onFalse(IntakeSubsystem.Commands.setVoltage(Constants.IntakeConstants.IDLE_VOLTAGE));
+        .onFalse(IntakeSubsystem.Commands.setVoltage(IntakeConstants.IDLE_VOLTAGE));
 
     // I am sorry
     operator
@@ -195,7 +232,6 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void autonomousInit() {
-    motionMode = MotionMode.TRAJECTORY;
     autoCommand = autoChooser.get();
     leds.setMode(LEDController.LEDMode.DEOCRATIVE);
 

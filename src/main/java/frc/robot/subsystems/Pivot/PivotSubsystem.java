@@ -59,10 +59,9 @@ public class PivotSubsystem extends SubsystemBase {
     double velocity = (inputs.absoluteEncoderAngle - lastPosition) / 0.02;
     io.updateInputs(inputs);
     double pidValue = controller.calculate(inputs.absoluteEncoderAngle, targetAngle);
-    // Bad hack since we dont use kv
     double feedforwardValue =
         feedforward.calculate(
-            inputs.absoluteEncoderAngle, targetAngle - inputs.absoluteEncoderAngle, 0);
+            inputs.absoluteEncoderAngle, targetAngle - inputs.absoluteEncoderAngle, velocity);
     double output = pidValue + feedforwardValue;
 
     // Code to create a good way to create setpoints
@@ -82,6 +81,9 @@ public class PivotSubsystem extends SubsystemBase {
     Logger.getInstance().recordOutput("Pivot/PIDOutput", pidValue);
     Logger.getInstance().recordOutput("Pivot/FFOutput", feedforwardValue);
     Logger.getInstance().recordOutput("Pivot/Velocity", velocity);
+    Logger.getInstance()
+        .recordOutput(
+            "Pivot/Command", getCurrentCommand() != null ? getCurrentCommand().getName() : "null");
 
     Logger.getInstance().processInputs("Pivot", inputs);
     lastPosition = inputs.absoluteEncoderAngle;

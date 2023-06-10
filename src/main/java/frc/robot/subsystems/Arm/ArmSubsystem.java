@@ -31,12 +31,13 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void setTargetHeight(double newHeight) {
     if (newHeight < ArmConstants.MIN_HEIGHT || newHeight > ArmConstants.MAX_HEIGHT) {
-      return;
-    } else targetHeight = newHeight;
+      // return;
+    }
+    targetHeight = newHeight;
   }
 
   public boolean isAtTarget() {
-    return Math.abs(targetHeight - inputs.motorEncoderHeight) < ArmConstants.EPSILON;
+    return Math.abs(targetHeight - inputs.absoluteEncoderHeight) < ArmConstants.EPSILON;
   }
 
   public void dontMove() {
@@ -51,11 +52,15 @@ public class ArmSubsystem extends SubsystemBase {
     pidValue =
         MathUtil.clamp(
             pidValue, -ArmConstants.MAX_PID_OUTPUT_VOLTS, ArmConstants.MAX_PID_OUTPUT_VOLTS);
-    // Bad hack since we dont use kv
     double feedforwardValue =
         feedforward.calculate(
-            Robot.pivot.getCurrentAngle(), targetHeight - inputs.absoluteEncoderHeight);
+            Robot.pivot.getCurrentAngle(), targetHeight - inputs.absoluteEncoderHeight, velocity);
     double output = pidValue + feedforwardValue;
+
+    // tolerance hack
+    if (Math.abs(targetHeight - inputs.absoluteEncoderAngle) < ArmConstants.GAINS.tolerance.get()) {
+      output = 0;
+    }
 
     // Code to create a good way to create setpoints
     double v = Robot.operator.getRightY();
@@ -74,21 +79,26 @@ public class ArmSubsystem extends SubsystemBase {
     Logger.getInstance().recordOutput("Arm/FFOutput", feedforwardValue);
     Logger.getInstance().recordOutput("Arm/Velocity", velocity);
 
+    Logger.getInstance()
+        .recordOutput(
+            "Arm/Command", getCurrentCommand() != null ? getCurrentCommand().getName() : "null");
+
     Logger.getInstance().processInputs("Arm", inputs);
     lastPosition = inputs.absoluteEncoderHeight;
   }
 
   public static class Commands {
     public static Command setHeight(double targetHeight) {
-      return new InstantCommand(() -> Robot.arm.setTargetHeight(targetHeight), Robot.arm);
+      return new InstantCommand(() -> Robot.arm.setTargetHeight(targetHeight));
     }
 
     public static Command setHeight(SuperstructureConfig config) {
       return setHeight(config.getArmHeight());
     }
 
-    public static Command setHeightAndWait(double angle) {
-      return new RunCommand(() -> setHeight(angle), Robot.arm).until(Robot.arm::isAtTarget);
+    public static Command setHeightAndWait(double height) {
+      return new RunCommand(() -> Robot.arm.setTargetHeight(height), Robot.arm)
+          .until(Robot.arm::isAtTarget);
     }
 
     public static Command setHeightAndWait(SuperstructureConfig config) {
