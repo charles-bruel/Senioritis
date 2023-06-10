@@ -99,8 +99,8 @@ public class MotionHandler {
     SwerveModuleState[] swerveModuleStates =
         DriveConstants.KINEMATICS.toSwerveModuleStates(
             ChassisSpeeds.fromFieldRelativeSpeeds(
-                xSpeed * yaw.getCos() + ySpeed * yaw.getSin(),
-                xSpeed * yaw.getSin() + ySpeed * yaw.getCos(),
+                xSpeed,
+                ySpeed,
                 rSpeed * DriveConstants.MAX_ROTATIONAL_SPEED_RAD_PER_SEC,
                 Rotation2d.fromDegrees(0)));
 

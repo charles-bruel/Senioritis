@@ -98,10 +98,10 @@ public final class Constants {
 
     public static final PIDFFGains GAINS =
         PIDFFGains.builder("PivotController")
-            .kP(0.15)
+            .kP(0.3)
             .kD(0.01)
             .kG(0.20)
-            .kS(0.67)
+            .kS(0.75)
             .armDegFF()
             .tolerance(0.5)
             .build();
@@ -109,7 +109,7 @@ public final class Constants {
 
   @UtilityClass
   public static class IntakeConstants {
-    public static final double IDLE_VOLTAGE = 0;
+    public static final double IDLE_VOLTAGE = 2;
     public static final double INTAKE_VOLTAGE = 5;
     public static final double OUTTAKE_VOLTAGE = -5;
   }

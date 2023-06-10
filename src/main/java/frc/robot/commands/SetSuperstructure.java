@@ -39,7 +39,7 @@ public class SetSuperstructure extends CommandBase {
         break;
       case 1:
         Robot.pivot.setTargetAngle(target.getPivotPosition());
-        if (Robot.arm.isAtTarget()) pathStage = 2;
+        if (Robot.pivot.isAtTarget()) pathStage = 2;
         break;
       case 2:
         Robot.arm.setTargetHeight(target.getArmHeight());
