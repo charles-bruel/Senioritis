@@ -15,7 +15,7 @@ public class ChassisIOMXP implements ChassisIO {
 
   @Override
   public void updateInputs(ChassisInputs inputs) {
-    inputs.gyroCompassHeading = gyro.getYaw();
+    inputs.gyroCompassHeading = gyro.getCompassHeading();
     inputs.gyroYawPosition = gyro.getYaw();
     inputs.gyroPitchPosition = gyro.getPitch();
     inputs.gyroRollPosition = gyro.getRoll();

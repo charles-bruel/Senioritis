@@ -33,7 +33,6 @@ public class ChassisSubsystem extends SubsystemBase {
   private LinearFilter filteredRoll = LinearFilter.singlePoleIIR(0.08, 0.02);
   public double filteredRollVal = 0;
 
-  public static double allianceFlipper = 1;
   public static Rotation2d resetGyroVal = null;
 
   /**

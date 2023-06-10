@@ -10,7 +10,6 @@ import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Robot;
 import frc.robot.commands.DumbDriveTrajectory;
-import frc.robot.subsystems.Chassis.ChassisSubsystem;
 import org.littletonrobotics.junction.Logger;
 
 public class MotionHandler {
@@ -30,21 +29,18 @@ public class MotionHandler {
    * @return The desired array of desaturated swerveModuleStates.
    */
   public static SwerveModuleState[] driveHeadingController() {
-    double speedFactor = (Robot.driver.getLeftTriggerAxis() > 0.25) ? 0.33 : 1.0;
 
     double xSpeed =
-        MathUtil.applyDeadband(-Robot.driver.getLeftY(), DriveConstants.K_JOYSTICK_TURN_DEADZONE)
-            * speedFactor;
+        MathUtil.applyDeadband(-Robot.driver.getLeftY(), DriveConstants.K_JOYSTICK_TURN_DEADZONE);
     double ySpeed =
-        MathUtil.applyDeadband(-Robot.driver.getLeftX(), DriveConstants.K_JOYSTICK_TURN_DEADZONE)
-            * speedFactor;
+        MathUtil.applyDeadband(-Robot.driver.getLeftX(), DriveConstants.K_JOYSTICK_TURN_DEADZONE);
 
     SwerveModuleState[] swerveModuleStates =
         DriveConstants.KINEMATICS.toSwerveModuleStates(
             ChassisSpeeds.fromFieldRelativeSpeeds(
-                xSpeed * DriveConstants.MAX_SWERVE_VEL * ChassisSubsystem.allianceFlipper,
-                ySpeed * DriveConstants.MAX_SWERVE_VEL * ChassisSubsystem.allianceFlipper,
-                Units.degreesToRadians(HeadingController.getInstance().update()) * speedFactor,
+                xSpeed * DriveConstants.MAX_SWERVE_VEL,
+                ySpeed * DriveConstants.MAX_SWERVE_VEL,
+                Units.degreesToRadians(HeadingController.getInstance().update()),
                 Robot.swerveDrive.getYaw()));
 
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.MAX_SWERVE_VEL);
@@ -65,18 +61,13 @@ public class MotionHandler {
     double rSpeed =
         MathUtil.applyDeadband(Robot.driver.getRightX(), DriveConstants.K_JOYSTICK_TURN_DEADZONE);
 
-    xSpeed *= DriveConstants.MAX_SWERVE_VEL * ChassisSubsystem.allianceFlipper;
-    ySpeed *= DriveConstants.MAX_SWERVE_VEL * ChassisSubsystem.allianceFlipper;
-
-    Rotation2d yaw = Robot.swerveDrive.getYaw();
-
     SwerveModuleState[] swerveModuleStates =
         DriveConstants.KINEMATICS.toSwerveModuleStates(
             ChassisSpeeds.fromFieldRelativeSpeeds(
-                xSpeed * yaw.getCos() + ySpeed * yaw.getSin(),
-                xSpeed * yaw.getSin() + ySpeed * yaw.getCos(),
+                xSpeed * DriveConstants.MAX_SWERVE_VEL,
+                ySpeed * DriveConstants.MAX_SWERVE_VEL,
                 rSpeed * DriveConstants.MAX_ROTATIONAL_SPEED_RAD_PER_SEC,
-                Rotation2d.fromDegrees(0)));
+                Rotation2d.fromDegrees(Robot.swerveDrive.inputs.gyroYawPosition)));
 
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, DriveConstants.MAX_SWERVE_VEL);
 
@@ -91,8 +82,8 @@ public class MotionHandler {
     double ySpeed = DumbDriveTrajectory.getXSpeed();
     double rSpeed = DumbDriveTrajectory.getRSpeed();
 
-    xSpeed *= DriveConstants.MAX_SWERVE_VEL * ChassisSubsystem.allianceFlipper;
-    ySpeed *= DriveConstants.MAX_SWERVE_VEL * ChassisSubsystem.allianceFlipper;
+    xSpeed *= DriveConstants.MAX_SWERVE_VEL;
+    ySpeed *= DriveConstants.MAX_SWERVE_VEL;
 
     Rotation2d yaw = Robot.swerveDrive.getYaw();
 
